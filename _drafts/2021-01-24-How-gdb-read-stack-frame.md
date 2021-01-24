@@ -58,7 +58,7 @@ symbol_file_add (const char *name, symfile_add_flags add_flags,
 
 Section information seperated by BFD is uesd to create `struct objfile` which is corresponding to vmlinux. `syms_from_objfile` will scan symbols from debug sections.
 
-On loading file, GDB only collects partial information about the symbol. It means GDB lazily access to subtree of DIEs. Otherwise, if you use `-readnow` flag, GDB will traverse whole DIEs with `expand_all_symtabs`.
+On loading vmlinux file, GDB only collects partial information about the symbol. It means GDB lazily access to subtree of DIEs. Otherwise, if you use `-readnow` flag, GDB will traverse whole DIEs with `expand_all_symtabs`. Thanks to lazy access, vmlinux which has huge debug information can be loaded quickly.
 
 ```c++
 static struct objfile *
@@ -76,3 +76,63 @@ symbol_file_add_with_addrs (bfd *abfd, const char *name,
 	objfile->sf->qf->expand_all_symtabs (objfile);
 ```
 
+The result of first quick lookup to dwarf sections, gdb constructs **partial symbol table**. I refer three types of symbol table of gdb from [GDB internals](https://www.sourceware.org/gdb/5/onlinedocs/gdbint.pdf) below.
+
+- full symbol tables (symtabs). These contain the main information about symbols and addresses.
+- partial symbol tables (psymtabs). These contain enough information to know when to read the corresponding part of the full symbol table.
+- minimal symbol tables (msymtabs). These contain information gleaned from nondebugging symbols.
+
+## DIE(Debugging Information Entry)
+
+DIE is basic node of tree which makes up `.debug_info` section. Into elf file, DIE is represented as serialized binary form. You can deserialize `.debug_info` section with `readelf -wi`. Below examples are from the vmlinux's `readelf` output.
+
+There are 2 DIEs in the exmaple. Each of them have different types, `DW_TAG_base_type` and `DW_TAG_variable`. Same as other serialized binary data, like python's pickle, type are started with leading tag-byte. You can find the `<1>`s from front of the each DIEs, it shows the level of the DIE node in the tree. And also you can find the hex numbers like `<12d>` from the starts of the each lines, it shows offset from the `.debug_info` section.
+
+```
+ # DIE 1
+ <1><12d>: Abbrev Number: 6 (DW_TAG_base_type)
+    <12e>   DW_AT_name        : (indirect string, offset: 0x1e4f0f): char
+    <132>   DW_AT_encoding    : 8	(unsigned char)
+    <133>   DW_AT_byte_size   : 1
+ 
+ # DIE 2
+ <1><134>: Abbrev Number: 2 (DW_TAG_variable)
+    <135>   DW_AT_name        : (indirect string, offset: 0x33366d): __ksymtab_static_key_initialized
+    <139>   DW_AT_type        : <0xf6>
+    <13d>   DW_AT_decl_file   : 2
+    <13e>   DW_AT_decl_line   : 144
+    <13f>   DW_AT_location    : 9 byte block: 3 b0 50 81 9 80 ff ff ff 	(DW_OP_addr: ffffff80098150b0)
+```
+
+Let's take a look at `struct partial_die_info` corresponding to DIE. Catch from the name `partial`, it does not not have complete information about symbol. It just have offset, tag, and program counter(PC) information. Even the name of the symbol is not included in `struct partial_die_info`.
+
+```c++
+/* When we construct a partial symbol table entry we only
+   need this much information.  */
+struct partial_die_info : public allocate_on_obstack
+  {
+    ...
+    /* Offset of this DIE.  */
+    const sect_offset sect_off;
+
+    /* DWARF-2 tag for this DIE.  */
+    const ENUM_BITFIELD(dwarf_tag) tag : 16;
+
+    /* If HAS_PC_INFO, the PC range associated with this DIE.  */
+    CORE_ADDR lowpc = 0;
+    CORE_ADDR highpc = 0;
+    ...
+
+    /* Compute the name of this partial DIE.  This memoizes the
+       result, so it is safe to call multiple times.  */
+    const char *name (dwarf2_cu *cu);
+  }
+```
+
+
+
+## References
+
+1. [IBM: Exploring the DWARF debug format information](https://developer.ibm.com/technologies/systems/articles/au-dwarf-debug-format/#compilation-unit)
+2. [Debugging with DWARF](http://dwarfstd.org/doc/Debugging%20using%20DWARF-2012.pdf)
+3. [GDB internals](https://www.sourceware.org/gdb/5/onlinedocs/gdbint.pdf)
