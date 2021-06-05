@@ -14,6 +14,7 @@ tags: [Statistics, ML]
 # 통계량
 
 - 평균, 편차, 분산, 표준편차와 같은 것들
+  - 표준편차는 평균과 같은 단위로 다룰 수 있음
 - 표본평균: n개를 뽑았을때 평균, 그 자체로 확률변수
   - 표본평균의 기댓값 = 모집단의 평균
 - 표본분산: n개를 뽑았을때 분산, 편차 제곱합을 $n-1$로 나눠야함
@@ -49,27 +50,35 @@ tags: [Statistics, ML]
 
 # 이산확률분포
 
-- 베르누이 분포: p와 1-p의 확률을 가진 시행을 1번 진행
+- 베르누이 분포
+  - p와 1-p의 확률을 가진 시행을 1번 진행
   - $f(x;p) = p^x(1-p)^{(1-x)}, \space x = 0,1$
   - $E[X] = p, \space V[X] = pq$
-- 이항 분포: 여러번의 베르누이 시행을 반복, 각 시행은 독립
+- 이항 분포
+  - 여러번의 베르누이 시행을 반복, 각 시행은 독립
   - $f(x;N,p) = \dbinom{N}{x} p^x(1-p)^{N-x}, \space x = 0,1 \dots n$
   - $E[X] = np, \space V[X] = npq$
   - n이 크면 정규분포로 근사 가능
-- 푸아송 분포: 단위 시간동안 특정 사건이 i번 발생할 확률
+- 푸아송 분포
+  - 단위 시간동안 특정 사건이 i번 발생할 확률
+  - $\lambda$는 단위 시간동안 특정 사건이 평균 발생했던 횟수
   - $f(k;\lambda) = \dfrac{\lambda^k}{k!}  e^{-\lambda}, \space x = 0,1 \dots$
   - $E[X] = \lambda, \space V[X] =  \lambda$
   - 이항분포가 $n \rightarrow \infty, p \rightarrow 0$ 이면 푸아송 분포로 근사된다.
-- 기하 분포: 첫 번재 성공이 일어날 때 까지의 시행횟수가 $x$일 확률
+- 기하 분포
+  - 첫 번재 성공이 일어날 때 까지의 시행횟수가 $x$일 확률
   - $f(x;p) = (1-p)^{x-1}p, \space x = 1,2 \dots$
   - $E[X] = 1/p, \space V[X] = (1-p) / p^2$
-  - 무기억성: 이전에 얼마를 시행했던간에, 처음 시행하는거랑 똑같다.
+  - 무기억성
+    - 이전에 얼마를 시행했던간에, 처음 시행하는거랑 똑같다.
     - $P(X=x+k \vert X>k) = P(X=x), \space x=1,2,\cdots$
-- 음이항분포: r번째 성공이 일어날 때 까지 시행횟수가 $x$일 확률
+- 음이항분포
+  - r번째 성공이 일어날 때 까지 시행횟수가 $x$일 확률
   - $f(x;r,p) = \dbinom{x-1}{r-1}p^r (1-p)^{x-r},\space x=r, r+1, \cdots$
   - $E[X] = r/p, \space V[X] = r(1-p) / p^2$
   - 기하분포의 평균 분산에다가 r만 곱해놓은 꼴
-- 초기하분포: $N$개의 공에서 $M$이 하얀색, $N-M$이 빨간색이라면, $K$개를 비복원추출했을때 $x$개가 흰색일 확률
+- 초기하분포
+  - $N$개의 공에서 $M$이 하얀색, $N-M$이 빨간색이라면, $K$개를 비복원추출했을때 $x$개가 흰색일 확률
   - $f(x;N,M,K) =\dfrac{\binom{M}{x} \binom{N-M}{K-x}}{\binom{N}{K}}$
   - $x=max\lbrace 0, M-N+K\rbrace, \cdots , min\lbrace K,M\rbrace$
   - $E[X] = K \dfrac{M}{N}, \space V[X] = K \dfrac{M}{N} \dfrac{N-M}{N} \dfrac{N-K}{N-1}$
@@ -96,10 +105,51 @@ tags: [Statistics, ML]
     - 과거 $t$만큼 시간이 지났더라도, 처음 시작하는거랑 똑같다.
     - 즉 이제 흐를 $s$만을 고려하면 된다.
     - $P(X \ge s+t \vert X \ge t) = P(X \ge s), \space \forall s,t \ge 0$
+  - $E[X] = 1/\lambda, \space V[X] = 1/\lambda^2$
+- 감마분포
+  - $\alpha$번의 사건이 발생하기 까지의 시간
+  - $\alpha$는 형상모수(shape parameter), $\lambda$는 척도모수(rate parameter)임
+  - $f(x;\alpha,\lambda) = \dfrac{\lambda^\alpha}{\Gamma(\alpha)}x^{a-1}e^{-\lambda x}, \space x > 0$
+  - $\Gamma(\alpha)=\displaystyle\int_{0}^{\infty}t^{\alpha-1}e^{-t}dt$
+  - 감마함수는 $n!$을 모든 실수 범위로 확장한 것.
+  - 지수분포의 일반화 = $\alpha$개의 지수분포의 합은 감마분포임
+    - $X = X_1 + X_2 + \cdots + X_\alpha$
+    - $X_i$가 모두 같은 $\lambda$를 가지는 지수분포이고, 독립이면
+    - X는 형상모수 $\alpha$를 가지는 감마분포.
+  - $E[X] = \alpha/\lambda, \space V[X] = \alpha/\lambda^2$
+- 베타분포
+  - 비율과 관련된 분포(불량률, 불순률, 고장률)
+  - $f(x;a,b) = \dfrac{\Gamma(a+b)}{\Gamma(a)\Gamma(b)} x^{a-1}(1-x)^{b-1}$
+  - 베타함수 
+    - $B(a,b) =  \dfrac{\Gamma(a+b)}{\Gamma(a)\Gamma(b)}$
+    - 교환 법칙: $B(a,b) = B(b,a)$
+    - $B(1,b) = 1/b$
+    - $B(a+1,b) = \dfrac{a}{a+b} B(a,b)$
+  - $E[X] = \dfrac{a}{a+b}, \space V[X] = \dfrac{ab}{(a+b)^2(a+b+1)}$
+  - $a == b$인 경우 대칭임
+
 
 # 결합확률변수
 
 - 확률변수: 표본공간에서 하나의 실수로 매핑
 - 결합확률변수: 표본공간에서 여러개의 실수로 매핑
-- 결합확률함수: 여러개의 확률변수를 하나의 확률(0과 1사이의 실수)로 매핑
+- 결합확률함수
+  - 여러개의 확률변수를 하나의 확률(0과 1사이의 실수)로 매핑
   - $f_{XY}(x,y) = P[X = x, Y = y]$
+  - 이산이면 sum으로, 연속이면 적분으로 확률을 구함
+- 주변확률함수(Marginal Probability Function)
+  - 결합확률함수에서, 특정 변수로 합/적분하고 난 이후의 함수
+- 주변확률분포(Marginal Probability Distribution) 
+  - 결합확률분포에서 하나의 변수를 무한대로 보내버림
+  - $F_X(a) = \displaystyle\lim_{b \rightarrow \infty} F_{XY}(a, b)$
+- 두 확률변수의 합 $X + Y$
+  - 합의 확률변수는 각 변수의 합성곱(Convolution)
+  - $f_{X+Y}(a) = \displaystyle\int_{-\infty}^{\infty} f_X(a-y)f_Y(a) dy$
+  - 지수분포의 합은 감마분포, 개수가 형상모수가 됨
+  - 감마분포의 합은 감마분포, 두 형상모수의 합이 형상모수가 됨
+  - 졍규분포의 합은 정규분포, 평균은 두 평균의 합, 분산은 두 분산의 합
+  - 졍규분포의 차은 정규분포, 평균은 두 평균의 차, 분산은 두 분산의 **합**
+  - 푸아송 분포의 합은 푸아송분포, $\lambda$는 두 $\lambda$의 합임
+  - 이항분포의 합은 이항분포
+
+# 공분산과 상관관계
