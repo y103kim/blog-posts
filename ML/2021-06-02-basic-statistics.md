@@ -1,16 +1,15 @@
 ---
 layout: post
-title: '기초 통계학 정리'
+title: "기초 통계학 정리"
 tags: [Statistics, ML]
 ---
 
-# 표본공간, 확률번수, 확률함수, 확률분포
+# 표본공간, 확률변수, 확률함수, 확률분포
 
 - 표본공간: 실험으로 부터 나온 시행들의 경우의 수
 - 확률변수: 표본공간의 Element를 실수로 변환
 - 확률함수: 확률 변수를 0과 1사이의 실수로 변환
 - 확률분포: 확률 함수로부터 나오는 확률들의 전반적인 패턴
-
 
 # 통계량
 
@@ -24,7 +23,6 @@ tags: [Statistics, ML]
   - $n-1$은 자유도(독립 변수의 개수)이다.
 - 표본평균의 분산: 표본 평균을 여러개 만들었을때의 분산
   - $V[\bar{X}] = \sigma/n$
-
 
 # 조건부 확률
 
@@ -40,7 +38,6 @@ tags: [Statistics, ML]
   - 근데 그냥 테이블 그리면 풀기는 쉬움, 전체 개수를 임의 값으로 두어함
   - $P(B_x \vert A) = \dfrac {P(B_x,A)} {P(A)}=\dfrac {P(A \vert B_x)P(B_x)} {\sum_{i=1}^n P(A \vert B_i)P(B_i)}$
 
-
 # 독립, 조건부 독립
 
 - 독립: 확률의 곱이 동시에 일어날 확률과 같음
@@ -50,27 +47,33 @@ tags: [Statistics, ML]
   - $P(A,B \vert C) = P(A \vert C)P(B \vert C)$
   - $P(A \vert B,C) = P(A \vert C)$
 
-
 # 이산확률분포
 
 - 베르누이 분포: p와 1-p의 확률을 가진 시행을 1번 진행
-  - $\text{Bern}(x;p) = p^x(1-p)^{(1-x)}, \space x = 0,1$
+  - $f(x;p) = p^x(1-p)^{(1-x)}, \space x = 0,1$
   - $E[X] = p, \space V[X] = pq$
 - 이항 분포: 여러번의 베르누이 시행을 반복, 각 시행은 독립
-  - $\text{Bin}(x;N,p) = \dbinom{N}{x} p^x(1-p)^{N-x}, \space x = 0,1 \dots n$
+  - $f(x;N,p) = \dbinom{N}{x} p^x(1-p)^{N-x}, \space x = 0,1 \dots n$
   - $E[X] = np, \space V[X] = npq$
   - n이 크면 정규분포로 근사 가능
 - 푸아송 분포: 단위 시간동안 특정 사건이 i번 발생할 확률
-  - $\text{Poi}(k;\lambda) = \dfrac{\lambda^k}{k!}  e^{-\lambda}, \space x = 0,1 \dots$
+  - $f(k;\lambda) = \dfrac{\lambda^k}{k!}  e^{-\lambda}, \space x = 0,1 \dots$
   - $E[X] = \lambda, \space V[X] =  \lambda$
   - 이항분포가 $n \rightarrow \infty, p \rightarrow 0$ 이면 푸아송 분포로 근사된다.
 - 기하 분포: 첫 번재 성공이 일어날 때 까지의 시행횟수가 $x$일 확률
-  - $\text{Geo}(x;p) = (1-p)^{x-1}p, \space x = 1,2 \dots$
+  - $f(x;p) = (1-p)^{x-1}p, \space x = 1,2 \dots$
   - $E[X] = 1/p, \space V[X] = (1-p) / p^2$
   - 무기억성: 이전에 얼마를 시행했던간에, 처음 시행하는거랑 똑같다.
     - $P(X=x+k \vert X>k) = P(X=x), \space x=1,2,\cdots$
-- 음이항분포, 초기하분포도 있음
-
+- 음이항분포: r번째 성공이 일어날 때 까지 시행횟수가 $x$일 확률
+  - $f(x;r,p) = \dbinom{x-1}{r-1}p^r (1-p)^{x-r},\space x=r, r+1, \cdots$
+  - $E[X] = r/p, \space V[X] = r(1-p) / p^2$
+  - 기하분포의 평균 분산에다가 r만 곱해놓은 꼴
+- 초기하분포: $N$개의 공에서 $M$이 하얀색, $N-M$이 빨간색이라면, $K$개를 비복원추출했을때 $x$개가 흰색일 확률
+  - $f(x;N,M,K) =\dfrac{\binom{M}{x} \binom{N-M}{K-x}}{\binom{N}{K}}$
+  - $x=max\lbrace 0, M-N+K\rbrace, \cdots , min\lbrace K,M\rbrace$
+  - $E[X] = K \dfrac{M}{N}, \space V[X] = K \dfrac{M}{N} \dfrac{N-M}{N} \dfrac{N-K}{N-1}$
+  - 평균과 분산은 이항분포를 떠올리면 좋음, $K = n$, $\frac{M}{N} = p$, $\frac{N-M}{N} = 1-p$에 해당.
 
 # 연속확률변수
 
@@ -93,3 +96,10 @@ tags: [Statistics, ML]
     - 과거 $t$만큼 시간이 지났더라도, 처음 시작하는거랑 똑같다.
     - 즉 이제 흐를 $s$만을 고려하면 된다.
     - $P(X \ge s+t \vert X \ge t) = P(X \ge s), \space \forall s,t \ge 0$
+
+# 결합확률변수
+
+- 확률변수: 표본공간에서 하나의 실수로 매핑
+- 결합확률변수: 표본공간에서 여러개의 실수로 매핑
+- 결합확률함수: 여러개의 확률변수를 하나의 확률(0과 1사이의 실수)로 매핑
+  - $f_{XY}(x,y) = P[X = x, Y = y]$
