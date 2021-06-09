@@ -4,6 +4,18 @@ title: "기초 통계학 정리"
 tags: [Statistics, ML]
 ---
 
+# 확률에 대한 정의
+
+- 빈도주의 확률
+  - 무한한 시행으로 확률을 계산, 임의성에 기반함
+  - 그러나 빈도가 매우 작은 사건의 확률을 정의하기 어려움
+  - 동전을 무한히 던져서 절반이 앞면이므로, 앞면이 나올 확률은 0.5이다.
+- 베이지안 확률
+  - 주관적인 신뢰도를 기반으로 확률을 정함
+  - 동전은 앞뒤가 동일한 넓이이므로, “앞면이 나왔다”는 주장의 신뢰도가 0.5이다
+  - 가설에 대한 확률도 정할 수 있다. (베이지안 추정)
+  - 빈도가 낮은 사건의 확률을 정의할 수 있다. (주관적 신뢰도이므로)
+
 # 표본공간, 확률변수, 확률함수, 확률분포
 
 - 표본공간: 실험으로 부터 나온 시행들의 경우의 수
@@ -36,7 +48,7 @@ tags: [Statistics, ML]
 - 베이즈 정리 - 전확률 + 조건부 확률 공식
   - $B$들이 일어났을 때 $A$의 확률을 전부 알음
   - $A$가 일어났을 때 $B_x$의 확률을 알 수 있음
-  - 근데 그냥 테이블 그리면 풀기는 쉬움, 전체 개수를 임의 값으로 두어함
+  - 근데 그냥 테이블 그리면 풀기는 쉬움, 전체 개수를 임의 값으로 두어야함
   - $P(B_x \vert A) = \dfrac {P(B_x,A)} {P(A)}=\dfrac {P(A \vert B_x)P(B_x)} {\sum_{i=1}^n P(A \vert B_i)P(B_i)}$
 
 # 독립, 조건부 독립
@@ -120,14 +132,13 @@ tags: [Statistics, ML]
 - 베타분포
   - 비율과 관련된 분포(불량률, 불순률, 고장률)
   - $f(x;a,b) = \dfrac{\Gamma(a+b)}{\Gamma(a)\Gamma(b)} x^{a-1}(1-x)^{b-1}$
-  - 베타함수 
+  - 베타함수
     - $B(a,b) =  \dfrac{\Gamma(a+b)}{\Gamma(a)\Gamma(b)}$
     - 교환 법칙: $B(a,b) = B(b,a)$
     - $B(1,b) = 1/b$
     - $B(a+1,b) = \dfrac{a}{a+b} B(a,b)$
   - $E[X] = \dfrac{a}{a+b}, \space V[X] = \dfrac{ab}{(a+b)^2(a+b+1)}$
   - $a == b$인 경우 대칭임
-
 
 # 결합확률변수
 
@@ -139,7 +150,7 @@ tags: [Statistics, ML]
   - 이산이면 sum으로, 연속이면 적분으로 확률을 구함
 - 주변확률함수(Marginal Probability Function)
   - 결합확률함수에서, 특정 변수로 합/적분하고 난 이후의 함수
-- 주변확률분포(Marginal Probability Distribution) 
+- 주변확률분포(Marginal Probability Distribution)
   - 결합확률분포에서 하나의 변수를 무한대로 보내버림
   - $F_X(a) = \displaystyle\lim_{b \rightarrow \infty} F_{XY}(a, b)$
 - 두 확률변수의 합 $X + Y$
@@ -153,3 +164,4 @@ tags: [Statistics, ML]
   - 이항분포의 합은 이항분포
 
 # 공분산과 상관관계
+
