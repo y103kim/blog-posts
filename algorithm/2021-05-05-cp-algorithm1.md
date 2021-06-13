@@ -43,16 +43,21 @@ tags: [algorithm, go]
 
 - [12850. 본대 산책2](https://www.acmicpc.net/problem/12850)
 
-
 # Extended Euclidean Algorithm
 
-### M이 소수가 아닐때, 곱셈의 역원
+### M이 소수가 아닐때, EEA로의 유도
 
 <https://github.com/y103kim/cp-algorithm/blob/main/algebrea/euclidean.go#L3-L14>
 
 - [14565. 역원 구하기](https://www.acmicpc.net/problem/14565)
   - 확장 유클리드 알고리즘의 가장 기본적인 활용처
   - $ax = 1 (mod \space m)$ 이면 $ax + my = 1$ 임을 이용해서 확장 유클리드로 변환한다.
+- [3955. 캔디 분배](https://www.acmicpc.net/problem/3955)
+  - $K*X+1 \equiv 0 \space (mod C)$
+  - $K*X + C*Y = 1$
+  - $X$가 반드시 음수가 되어야 하므로, $X \ge 0$일 경우는 $X$에 $C$를 빼고 $Y$에 $K$를 더한다.
+
+### M이 소수일때, 페르마의 소정리를 통한 응용
 
 
 ## String
