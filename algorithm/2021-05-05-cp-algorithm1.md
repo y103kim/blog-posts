@@ -36,7 +36,6 @@ tags: [algorithm, go]
 - [2086. 피보나치 수의 합](https://www.acmicpc.net/problem/2086)
   - 피보나치 수의 합은 피보나치 수열 -1이다.
 
-
 ### Power of Adjacency Matrix
 
 인접 행렬의 거듭제곱은 A에서 B까지 갈 수 있는 경우의 수이다.
@@ -59,10 +58,25 @@ tags: [algorithm, go]
 
 ### M이 소수일때, 페르마의 소정리를 통한 응용
 
-
-## String
+# String
 
 ### ETC
 
 - [가장 큰 수](https://programmers.co.kr/learn/courses/30/lessons/42746)
   - 이어붙여서 더 큰지를 비교하려면, `a + b < b + a`를 비교하면 된다.
+
+# Stack
+
+### 요철 형태의 계산 찾기
+
+- 히스토그램 처럼 스택에 감소 혹은 증가 하는 요소만 남기면 되는 형태
+- "이 요소는 이후 계산에서 절대 쓰이지 않는다"를 논증하면 해법을 찾기가 쉬워진다.
+- [1725. 히스토그램](https://www.acmicpc.net/problem/1725)
+  - 증가하는 요소만 저장해야 한다.
+  - 사이즈를 나중에 알기 위해서 위치도 함께 저장하자.
+- [3015. 오아시스 재결합](https://www.acmicpc.net/problem/3015)
+  - 이 경우는 히스토그램과 반대로 감소하는 수열을 저장해야 한다.
+  - 키가 같은 사람에 대한 처리를 위해서 스택에 연속된 사람수를 저장해야 한다.
+- [Maximal Rectangle](https://leetcode.com/problems/maximal-rectangle/)
+  - 히스토그램 풀이를 매 행마다 만복해 주면 된다.
+
