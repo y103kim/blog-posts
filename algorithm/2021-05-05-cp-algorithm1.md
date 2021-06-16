@@ -12,7 +12,7 @@ tags: [algorithm, go]
 
 일단은 간단한 거듭제곱 연산문제, 이진법 표기대로 더해준다고 생각하면 된다.
 
-<https://github.com/y103kim/cp-algorithm/blob/main/algebrea/pow.go#L3-L15>
+<https://github.com/y103kim/cp-algorithm/blob/main/algebrea/pow.go#L7-L17>
 
 - [1629. 곱셈](https://www.acmicpc.net/problem/1629)
 - [13172. Σ](https://www.acmicpc.net/problem/13272)
@@ -25,7 +25,7 @@ tags: [algorithm, go]
 
 행렬의 거듭제곱도 이진 제곱으로 손쉽게 풀린다.
 
-<https://github.com/y103kim/cp-algorithm/blob/main/algebrea/pow.go#L17-L54>
+<https://github.com/y103kim/cp-algorithm/blob/main/algebrea/pow.go#L23-L59>
 
 - [11444. 피보나치 수 6](https://www.acmicpc.net/problem/11444)
   - 피보나치 수의 경우는 `[[1,1],[1,0]]` 행렬을 제곱하면 된다.
@@ -57,6 +57,12 @@ tags: [algorithm, go]
   - $X$가 반드시 음수가 되어야 하므로, $X \ge 0$일 경우는 $X$에 $C$를 빼고 $Y$에 $K$를 더한다.
 
 ### M이 소수일때, 페르마의 소정리를 통한 응용
+
+소수로 모듈러 연산을 할때, 곱셈에 대한 역원(나눗셈)이 `Pow(a, m-2)`이 됨을 이용하면 된다.
+
+<https://github.com/y103kim/cp-algorithm/blob/main/algebrea/pow.go#L19-L21>
+
+- [20412. 추첨상 사수 대작전! (Hard)](https://www.acmicpc.net/problem/20412)
 
 # String
 
