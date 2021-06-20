@@ -8,11 +8,11 @@ tags: [algorithm, go]
 
 # Binary Exponentiation
 
+<https://github.com/y103kim/cp-algorithm/blob/main/algebrea/pow.go>
+
 ### Integer Power
 
 일단은 간단한 거듭제곱 연산문제, 이진법 표기대로 더해준다고 생각하면 된다.
-
-<https://github.com/y103kim/cp-algorithm/blob/main/algebrea/pow.go#L7-L17>
 
 - [1629. 곱셈](https://www.acmicpc.net/problem/1629)
 - [13172. Σ](https://www.acmicpc.net/problem/13272)
@@ -24,8 +24,6 @@ tags: [algorithm, go]
 ### Matrix Power
 
 행렬의 거듭제곱도 이진 제곱으로 손쉽게 풀린다.
-
-<https://github.com/y103kim/cp-algorithm/blob/main/algebrea/pow.go#L23-L59>
 
 - [11444. 피보나치 수 6](https://www.acmicpc.net/problem/11444)
   - 피보나치 수의 경우는 `[[1,1],[1,0]]` 행렬을 제곱하면 된다.
@@ -44,9 +42,9 @@ tags: [algorithm, go]
 
 # Extended Euclidean Algorithm
 
-### M이 소수가 아닐때, EEA로의 유도
+<https://github.com/y103kim/cp-algorithm/blob/main/algebrea/euclidean.go>
 
-<https://github.com/y103kim/cp-algorithm/blob/main/algebrea/euclidean.go#L3-L14>
+### M이 소수가 아닐때, EEA로의 유도
 
 - [14565. 역원 구하기](https://www.acmicpc.net/problem/14565)
   - 확장 유클리드 알고리즘의 가장 기본적인 활용처
@@ -60,9 +58,24 @@ tags: [algorithm, go]
 
 소수로 모듈러 연산을 할때, 곱셈에 대한 역원(나눗셈)이 `Pow(a, m-2)`이 됨을 이용하면 된다.
 
-<https://github.com/y103kim/cp-algorithm/blob/main/algebrea/pow.go#L19-L21>
-
 - [20412. 추첨상 사수 대작전! (Hard)](https://www.acmicpc.net/problem/20412)
+
+# Prime numbers
+
+<https://github.com/y103kim/cp-algorithm/blob/main/algebrea/prime.go>
+
+### Sieve of Eratosthenes
+
+별 설명이 필요없는 에라토스테네스의 체, [포스트](https://doocong.com/algorithm/sieve-of-eratosthenes/)를 작성한 적 있음
+
+- [1747. 소수&팰린드롬](https://www.acmicpc.net/problem/1747)
+  - 소수인지 판단하고, N보다 큰 경우 펠린드롬인지 확인하면 끝
+
+### Miller-Rabin
+
+- [5615. 아파트 임대](https://www.acmicpc.net/problem/5615)
+  - $(2x + 1)(2y + 1) = (2k + 1)$이므로 k가 소수이면 x, y가 존재하지 않음
+  - k가 매우 커질 수 있으므로 에라토스테네스의 체로는 안풀리고, 밀러 라빈을 써야함
 
 # String
 
