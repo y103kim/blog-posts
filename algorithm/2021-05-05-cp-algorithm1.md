@@ -77,6 +77,47 @@ tags: [algorithm, go]
   - $(2x + 1)(2y + 1) = (2k + 1)$이므로 k가 소수이면 x, y가 존재하지 않음
   - k가 매우 커질 수 있으므로 에라토스테네스의 체로는 안풀리고, 밀러 라빈을 써야함
 
+
+# Array
+
+### Inversion Count
+
+버블소트를 할때 필요한 Swap의 수
+- 머지소트를 할때, Merge 단계에서 역전되는 수를 세거나
+- Fenwick Tree나 Segement Tree로 구할 수 있다.
+
+- [1517. 버블 소트](https://www.acmicpc.net/problem/1517)
+  - 전형적인 Inversion Count 문제. 
+- [New Year Chaos](https://www.hackerrank.com/challenges/new-year-chaos)
+  - 2번의 이동제한이 있어서 머지소트로는 못푸는 문제
+  - 그냥 뒤에서부터 2번 제한으로 Linear 검사하면, 선형시간에 풀 수 있음
+
+# Query
+
+### Range Query
+
+- Fenwick Tree로 푸는 형태
+  - [2042. 구간 합 구하기](https://www.acmicpc.net/problem/2042)
+    - 가장 간단한 형태의 구간쿼리
+  - [17353. 하늘에서 떨어지는 1, 2, ..., R-L+1개의 별](https://www.acmicpc.net/problem/17353)
+    - X에 관한 식으로 합을 나타낼 수 있음을 이용하는 문제
+    - 만약 2개의 update가 각각 $L_1, L_2$에서 있었다면
+    - $2X - (L_1-1) - (L_2-1)$이 X에서의 합이다.
+    - 이를 이용하여 두개의 펜윅 트리에 각각 1차, 상수항을 저장하면 풀린다.
+  - [3653. 영화 수집](https://www.acmicpc.net/problem/3653)
+    - 개수를 세는 유형
+    - 위치가 변경될 것을 대비해서 아래로 공간을 확보해두어야한다.
+- Segment Tree로 푸는 형태
+  - [2357. 최솟값과 최대값](https://www.acmicpc.net/problem/2357)
+    - 값이 전부 주어지고, 이후 최대, 최소 쿼리 계산
+  - [1395. 스위치](https://www.acmicpc.net/problem/1395)
+    - 스위치 반전 Update, 켜진 스위치의 합 Query
+    - Range Update이기 때문에 Lazy Propgation 필요
+- Array로 끝나는 형태
+  - [Array Manipulation](https://www.hackerrank.com/challenges/crush)
+    - Query가 단 한번이라면, Fenwick이나 Segment tree를 만들면 더 느리다.
+    - 그냥 쭉 정리해놓고, N으로 Linear하게 탐색하면 된다.
+
 # String
 
 ### ETC
@@ -89,7 +130,7 @@ tags: [algorithm, go]
 ### 요철 형태의 계산 찾기
 
 - 히스토그램 처럼 스택에 감소 혹은 증가 하는 요소만 남기면 되는 형태
-- "이 요소는 이후 계산에서 절대 쓰이지 않는다"를 논증하면 해법을 찾기가 쉬워진다.
+- *"이 요소는 이후 계산에서 절대 쓰이지 않는다"*를 논증하면 해법을 찾기가 쉬워진다.
 - [1725. 히스토그램](https://www.acmicpc.net/problem/1725)
   - 증가하는 요소만 저장해야 한다.
   - 사이즈를 나중에 알기 위해서 위치도 함께 저장하자.
@@ -99,3 +140,14 @@ tags: [algorithm, go]
 - [Maximal Rectangle](https://leetcode.com/problems/maximal-rectangle/)
   - 히스토그램 풀이를 매 행마다 만복해 주면 된다.
 
+# Graph
+
+### Topological Sort
+
+
+# Combinatorics
+
+### Cyclic Permutation
+
+- [Minimum Swaps 2](https://www.hackerrank.com/challenges/minimum-swaps-2)
+  - 순열 사이클 찾는 문제, 계속 Swap 하면 됨.
