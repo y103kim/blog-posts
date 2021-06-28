@@ -33,6 +33,8 @@ tags: [algorithm, go]
   - 피보나치 수의 짝수항의 합은 피보나치 수열 - 1이다.
 - [2086. 피보나치 수의 합](https://www.acmicpc.net/problem/2086)
   - 피보나치 수의 합은 피보나치 수열 -1이다.
+- [13430. 합 구하기](https://www.acmicpc.net/problem/13430)
+  - 점화식을 세워서 행렬로 바꾸는 유형, ([포스팅](https://doocong.com/algorithm/matrix-dp/))
 
 ### Power of Adjacency Matrix
 
