@@ -82,6 +82,8 @@ tags: [algorithm, go]
 
 ### Inversion Count
 
+<https://github.com/y103kim/cp-algorithm/blob/main/array/inversion_count.go>
+
 버블소트를 할때 필요한 Swap의 수
 - 머지소트를 할때, Merge 단계에서 역전되는 수를 세거나
 - Fenwick Tree나 Segement Tree로 구할 수 있다.
