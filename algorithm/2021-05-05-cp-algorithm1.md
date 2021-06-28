@@ -66,7 +66,7 @@ tags: [algorithm, go]
 
 ### Sieve of Eratosthenes
 
-별 설명이 필요없는 에라토스테네스의 체, [포스트](https://doocong.com/algorithm/sieve-of-eratosthenes/)를 작성한 적 있음
+별 설명이 필요없는 에라토스테네스의 체, [포스팅](https://doocong.com/algorithm/sieve-of-eratosthenes/)한 적 있음
 
 - [1747. 소수&팰린드롬](https://www.acmicpc.net/problem/1747)
   - 소수인지 판단하고, N보다 큰 경우 펠린드롬인지 확인하면 끝
@@ -82,9 +82,8 @@ tags: [algorithm, go]
 
 ### Inversion Count
 
-<https://github.com/y103kim/cp-algorithm/blob/main/array/inversion_count.go>
-
-버블소트를 할때 필요한 Swap의 수
+- 버블소트를 할때 필요한 Swap의 수
+- <https://github.com/y103kim/cp-algorithm/blob/main/array/inversion_count.go>
 - 머지소트를 할때, Merge 단계에서 역전되는 수를 세거나
 - Fenwick Tree나 Segement Tree로 구할 수 있다.
 
@@ -140,7 +139,7 @@ tags: [algorithm, go]
   - 이 경우는 히스토그램과 반대로 감소하는 수열을 저장해야 한다.
   - 키가 같은 사람에 대한 처리를 위해서 스택에 연속된 사람수를 저장해야 한다.
 - [Maximal Rectangle](https://leetcode.com/problems/maximal-rectangle/)
-  - 히스토그램 풀이를 매 행마다 만복해 주면 된다.
+  - 히스토그램 풀이를 매 행마다 반복해 주면 된다.
 
 # Graph
 
