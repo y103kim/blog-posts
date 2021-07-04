@@ -1,5 +1,6 @@
 ---
 layout: post
+category: embedded
 title: ELF hack with LIEF
 modified: 2019-07-11
 tags: [LIEF, python, ELF]

@@ -1,5 +1,6 @@
 ---
 layout: post
+category: algorithm
 title: "CP 알고리즘 정리 (golang)"
 tags: [algorithm, go]
 ---

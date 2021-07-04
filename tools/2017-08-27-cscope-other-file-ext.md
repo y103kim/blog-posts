@@ -1,5 +1,6 @@
 ---
 layout: post
+category: tools
 title: 다른 확장자 파일 cscope에 추가하기
 modified: 2017-08-21
 tags: [cscope, development]

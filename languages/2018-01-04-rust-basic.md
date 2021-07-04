@@ -1,6 +1,7 @@
 ---
 layout: post
-title: Rust 한방에 배우기(1) - 변수와 타입
+category: languages
+title: Rust - 변수와 타입
 modified: 2017-11-21
 tags: [rust language, rust guide, quick start]
 ---

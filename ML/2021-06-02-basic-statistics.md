@@ -1,5 +1,6 @@
 ---
 layout: post
+category: ML
 title: "기초 통계학 정리"
 tags: [Statistics, ML]
 ---

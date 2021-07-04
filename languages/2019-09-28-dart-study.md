@@ -1,6 +1,7 @@
 ---
 layout: post
-title: Flutter Study(1) - Dart(1)
+category: languages
+title: Dart(1)
 tags: [dart, flutter]
 ---
 

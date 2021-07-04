@@ -1,8 +1,9 @@
 ---
 layout: post
+category: languages
 title: Typescript Study for React
 modified: 2018-10-20
-tags: [Typescript, React, ]
+tags: [Typescript, React]
 ---
 
 ## Basic Types
