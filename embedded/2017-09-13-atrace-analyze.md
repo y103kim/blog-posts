@@ -1,6 +1,5 @@
 ---
 layout: post
-category: development
 title: atrace 분석
 modified: 2017-09-13
 tags: [atrace, development, android, systrace]

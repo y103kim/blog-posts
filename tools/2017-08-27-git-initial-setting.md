@@ -1,6 +1,5 @@
 ---
 layout: post
-category: development
 title: git 초기 설정하기
 modified: 2017-08-27
 tags: [git, setting, development]

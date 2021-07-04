@@ -1,6 +1,5 @@
 ---
 layout: post
-category: development
 title: jsoncpp 설치 및 사용법
 modified: 2017-09-04
 tags: [json, cpp, jsoncpp]

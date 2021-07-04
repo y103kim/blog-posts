@@ -1,6 +1,5 @@
 ---
 layout: post
-category: development
 title: Visual Studio Code
 modified: 2017-09-05
 tags: [Visual Studio, Code, Vim, 편집기]

@@ -1,6 +1,5 @@
 ---
 layout: post
-category: development
 title: ADB accel design
 modified: 2017-09-10
 tags: [adb stacker, development, adb]

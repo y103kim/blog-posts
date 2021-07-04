@@ -1,6 +1,5 @@
 ---
 layout: post
-category: react
 title: Typescript Study for React
 modified: 2018-10-20
 tags: [Typescript, React, ]
