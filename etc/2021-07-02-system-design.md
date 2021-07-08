@@ -106,11 +106,27 @@ tags: [System Design]
   
 # Application Layer
 
-- MSA vs Monolithic
-  - 
+- Monolithic
+  - 하나로 짜여져 있는 큰 어플리케이션
+  - 장점: 통합 시나리오 테스트가 간편, 초기 개발 용이, 배포 용이
+  - 단점: 업데이트, 자원관리, 새로운 기술적용, 확장이 어려움
+- Microservice Architecture
+  - 각 기능을 쪼개서 개발
+  - 장점: 확장성, 새로운 서비스 개발이 상대적으로 쉬움
+  - 단점: 성능, 디버깅 어려움, 개발 복잡도 증가
+- Service Discovery
+  - MSA로 구성할 때, LB가 각 서버를 알 수 있도록 IP정보를 배포
+  - 복잡성이 추가됨
+- 대체로 요새는 Docker 같은 Container를 이용해 MSA를 배포
 
-# Database
+# Database - RDBMS
 
+- 스키마 필요함
+- ACID(Atomicity, Consistency, Isolation, Durability) 트랜젝션
+  - Atomicity: 각 트랜젝션의 원자성
+  - Consistency: 트랜젝션은 항상 같은 전이를 보장
+  - Isolation: 트랜젝션의 동시 실행은 직렬 실행과 같은 결과를 보장
+  - Durability: 트랜젝션이 Commit된 이후에 철회되지 않음
 - Replication
   - Master-slave: master는 읽기쓰기 가능, Slave에는 읽기만 가능
     - 장점 
@@ -130,4 +146,46 @@ tags: [System Design]
       - 쓰기 지연 증가 
       - ACID를 위반하거나 vs 쓰기 지연 증가
       - Master 개수가 늘면, 대기시간 증가, 충돌 해결 비용도 증가
+- Federation
+  - Vertical Partitioning to multiple database
+  - 데이터베이스를 기능 단위로 분할(예 - 유저, 블로그, 제품)
+  - 단점: 두 데이터베이스를 Join 해야할 때 성능 하락이 심함, 복잡해짐
+- Sharding
+  - Horizontal Partitioning to multiple database
+  - 한 테이블 내 행들을 여러개의 DB로 분할
+  - 장점: 캐시 적중 높이고, Throughput 높아짐, 인덱스 크기 감소, DB 사이즈 감소
+  - 단점: 매우 복잡해짐, 샤드 재조정이 어려움, 여러 Shard Join 매우 어려움
+- Denormalization
+  - Foreign Key 등을 써서 쪼개놓았던 두 테이블을 Join 시킨 체로 저장함
+  - 이러면 여러개의 중복 데이터가 생김, Join을 안해도 되므로 빠르지만, 일관성 보장이 어려움
+  - 읽기 집중적일때 좋음, 쓰기 집중적일때 안좋음
 
+# Database - NoSQL
+
+### Memcached
+
+- 메모리만 이용, 복구 안됨, 스트링만 저장, LRU
+- 연결 리스트 기반 Hash Table
+- Consistent Hashing 기반으로 여러개의 Memcached를 이용 가능 [(참고)](https://cloud.google.com/architecture/deploying-memcached-on-kubernetes-engine)
+- 여러개의 Memcached를 이용하는건 가용성 및 대역폭을 위함
+  - Replication은 아니고 Sharding 임
+  - https://github.com/twitter/twemproxy
+
+### Redis
+
+- 메모리+디스크 기반, 디스크 저장되어 복구 가능
+- Persistent Storage
+  - RDB(Redist Database): 일정 간격으로 데이터 세트의 스냅샷 저장
+    - (+) 포크 이후 저장하므로 성능 하락 없음
+    - (+) AOF보림 복원 빠름
+    - (-) 장애시 일정 데이터의 손실 있을 수 있음 (Durability 하락)
+    - (-) 데이터 세트가 큰 경우 CPU 중단 시간이 길어질 수 있음
+  - AOF(Append Only File): 서버가 수신한 모든 작업을 저장하여, 추후에 Replay해 복원
+    - (+) 훨씬 안정적이고 내구성이 높아짐
+    - (-) RDB보다 저장 파일 사이즈가 크고, 복구시에 느림
+  - RDB+AOF: RDB로 저장이 완료된 이후의 값들을 AOF로 가지고 있음
+    - 공식 사이트에 따르면, 둘다 쓰는게 권장됨
+- 자료구조 지원(String, Set, Sorted Set, Hash, List)
+  - 금새 느려지므로 사용에 주의, 1만개 이상은 넣지말기
+- 싱글스레드
+- 주된 활용처는 채팅, 메시지, 대기열, 세션, 미디어, 지리공간 등
