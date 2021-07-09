@@ -1,11 +1,11 @@
 ---
 layout: post
 category: etc
-title: System Design Interview
+title: 시스템 디자인 인터뷰
 tags: [System Design]
 ---
 
-시스템 디자인 인터뷰 준비를 위한 요약
+시스템 디자인 인터뷰 준비를 위한 요뷰
 
 # 기본 컨셉들
 
@@ -160,6 +160,33 @@ tags: [System Design]
   - 이러면 여러개의 중복 데이터가 생김, Join을 안해도 되므로 빠르지만, 일관성 보장이 어려움
   - 읽기 집중적일때 좋음, 쓰기 집중적일때 안좋음
 
+# Concepts for Distributed System
+
+### Paxos Alogirhtm
+
+- Consensus(합의)를 거쳐서 결론에 도달하는 과정
+- Paxos Basics
+  - 3가지 역할: proposers, acceptors, learner
+    - 각 노드는 여러개의 역할을 동시에 할 수 있음
+    - 각 노드는 과반수가 되는 acceptor의 수를 알아야 한다.
+    - 각 노드는 persistent해야한다. 각 노드는 한번 accept한걸 잊지 못함.
+  - 한번 합의에 도달하면 바꾸지 못함.
+- Progress
+  - prepare: proposer가 acceptor들에게 N번 제안을 준비하라고 보냄
+  - promise: acceptor는 proposer에게 N번 미만의 제안을 더이상 수락하지 않겠다고 약속함
+    - 만약, 이전에 수락한 적이 있었다면, 수락했었던 결과를 함께 돌려보냄
+    - 만약, N보다 큰 제안을 이미 받았었다면, Ignore를 보냄
+  - accept!: proposer가 acceptor에게 제안하는 데이터를 보냄
+  - accepted: acceptor는 proposer의 제안을 수락할지 말지 결정
+    - 만약, 이전에 확정한 제안이 없다면, 이를 모든 learner에게 알림
+    - 만약, 이전에 합의에 이른 제안이 있다면, 들어온 제안을 무시하고, 거절(Nack)을 proposer에게 보냄
+- 읽어보기
+  - [위키백과](https://ko.wikipedia.org/wiki/%ED%8C%A9%EC%86%8C%EC%8A%A4_(%EC%BB%B4%ED%93%A8%ED%84%B0_%EA%B3%BC%ED%95%99)
+
+### Consistent Hashing
+
+- Hash 공간 내의 Hash들의 재조정을 최소한으로 하면서 
+
 # Database - NoSQL
 
 ### Memcached
@@ -189,3 +216,11 @@ tags: [System Design]
   - 금새 느려지므로 사용에 주의, 1만개 이상은 넣지말기
 - 싱글스레드
 - 주된 활용처는 채팅, 메시지, 대기열, 세션, 미디어, 지리공간 등
+
+
+# Distributed Cordinator
+
+### Zookeeper
+
+- ACID는 아니더라도, PC/EC 제공
+- Sequential Consistency: 순서대로 적용됨을 보장
