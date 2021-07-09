@@ -164,6 +164,7 @@ tags: [System Design]
 
 ### Paxos Alogirhtm
 
+- 참고: [위키백과](https://ko.wikipedia.org/wiki/%ED%8C%A9%EC%86%8C%EC%8A%A4_(%EC%BB%B4%ED%93%A8%ED%84%B0_%EA%B3%BC%ED%95%99))
 - Consensus(합의)를 거쳐서 결론에 도달하는 과정
 - Paxos Basics
   - 3가지 역할: proposers, acceptors, learner
@@ -180,8 +181,6 @@ tags: [System Design]
   - accepted: acceptor는 proposer의 제안을 수락할지 말지 결정
     - 만약, 이전에 확정한 제안이 없다면, 이를 모든 learner에게 알림
     - 만약, 이전에 합의에 이른 제안이 있다면, 들어온 제안을 무시하고, 거절(Nack)을 proposer에게 보냄
-- 읽어보기
-  - [위키백과](https://ko.wikipedia.org/wiki/%ED%8C%A9%EC%86%8C%EC%8A%A4_(%EC%BB%B4%ED%93%A8%ED%84%B0_%EA%B3%BC%ED%95%99)
 
 ### Consistent Hashing
 
@@ -191,6 +190,7 @@ tags: [System Design]
 
 ### Memcached
 
+- Key-Value DB
 - 메모리만 이용, 복구 안됨, 스트링만 저장, LRU
 - 연결 리스트 기반 Hash Table
 - Consistent Hashing 기반으로 여러개의 Memcached를 이용 가능 [(참고)](https://cloud.google.com/architecture/deploying-memcached-on-kubernetes-engine)
@@ -200,6 +200,8 @@ tags: [System Design]
 
 ### Redis
 
+- 참고: [우아한 Redis](https://ict-nroo.tistory.com/133), [Redis 기본개념](https://sjh836.tistory.com/178)
+- Key-Value DB
 - 메모리+디스크 기반, 디스크 저장되어 복구 가능
 - Persistent Storage
   - RDB(Redist Database): 일정 간격으로 데이터 세트의 스냅샷 저장
