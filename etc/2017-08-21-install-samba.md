@@ -1,6 +1,6 @@
 ---
 layout: post
-category: webserver
+category: etc
 title: samba 설치 및 설정
 modified: 2017-08-21
 tags: [samba, webserver]

@@ -1,6 +1,6 @@
 ---
 layout: post
-category: webserver
+category: etc
 title: Ubuntu 16.04 설치하기
 modified: 2017-08-17
 tags: [ubuntu, webserver]

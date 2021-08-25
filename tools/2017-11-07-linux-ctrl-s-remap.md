@@ -1,9 +1,9 @@
 ---
 layout: post
-category: vim
+category: tools
 title: linux의 Ctrl-S 맵핑 제거/교체하기
 modified: 2017-11-07
-tags: [linux, ctrl-s, bash, 화면 정지, freeze]
+tags: [linux, bash, 화면 정지, freeze]
 ---
 
 ## 화면 정지 기능 없애기

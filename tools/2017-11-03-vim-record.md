@@ -1,6 +1,6 @@
 ---
 layout: post
-category: vim
+category: tools
 title: vim의 record 기능 활용하기
 modified: 2017-11-03
 tags: [vim, vimrc, record]

@@ -1,6 +1,6 @@
 ---
 layout: post
-category: webserver
+category: etc
 title: dropbox와 jekyll 연동하기
 modified: 2017-11-02
 tags: [webserver, jekyll, dropbox]

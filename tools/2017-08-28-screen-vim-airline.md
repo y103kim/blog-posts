@@ -1,6 +1,6 @@
 ---
 layout: post
-category: vim
+category: tools
 title: screen에서 vim-airline을 사용하기 위한 설정
 modified: 2017-08-28
 tags: [vim, screen, vim-airline]
