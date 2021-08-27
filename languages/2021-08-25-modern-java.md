@@ -47,3 +47,57 @@ tags: [Java]
 
 # Chapter2. Behavior Parameterization
 
+- `List<Apple>`에서 녹색사과 고르기 예제
+  - 조건을 파라미터화 하거나 일일이 구현해 주는것이 코드 복잡성을 증가시킴
+  - 동작을 클래스 혹은 익명클래스로 넘겨도 너무 반복되는 코드가 많음(Verbosity)
+  - 결국 람다나, 메소드 참조로 해결하게 됨.
+- 실제로 `Testable`, `Runnable`, `Callable`등을 쓸 때 람다를 넘기면 유용함.
+
+# Chapter3. Lambda Expression
+
+- 기본적으로 다른 언어에서 사용되는 람다와 거의 같음
+  - 다만 외부변수는 `final` 혹은 실질적 `final` 상태이어야 함
+  - 즉 외부 변수로 참조하고 나서 값이 바뀌면 안됨.
+    ```
+    int p = 1;
+    Runnable r = () -> System.out.println(p);
+    p = 2;
+    r.run();
+    ```
+- Functional Interface에 대입할 수 있음
+  - 추상 메서드가 하나인 인터페이스
+  - 단 디폴트 메서드는 함께 사용할 수 있음(추상이 아니므로)
+  - `@FunctionalInterface`를 붙여주면 컴파일러가 유효성을 검사함
+  - 람다의 타입을 추상메소드(Functional Descriptor)와 맞추어야함
+  - 추상 메소드에 타입이 명기되어 있다면, 람다의 파라미터 타입을 생략해도 무방
+    ```
+    Consumer<Apple> consumer = (a) => {}
+    ```
+- 대표적인 Functional Interface
+  - `Predicate<T>` = `(T) -> boolean`
+  - `Consumer<T>` = `(T) -> void`
+  - `Function<T, R>` = `(T) -> R`
+  - `Supplier<T>` = `() -> T`
+  - `UnaryOperator<T>` = `(T) -> T`
+  - `BinaryOperator<T>` = `(T, T) -> T`
+  - `BiPredicate<T, U>` = `(T, U) -> boolean`
+  - `BiConsumer<T, U>` = `(T, U) -> void`
+  - `BiFunction<T, U, R>` = `(T, U) -> R`
+- Method Reference
+  - 람다의 축약형 `Apple::getWeight` = `(Apple a) -> a.getWeight`
+  - 목적: 가독성 향상
+  - 생성자도 참조 가능
+  - Functional Interface의 comparing + Method Reference
+    ```java
+    inventory.sort(Comparator.comparing(Apple::getWeight));
+    ```
+  - 3가지 방식의 Method Reference
+    - `(args) -> ClassName.staticMethod(args)` = `ClassName::staticMethod`
+    - `(arg, rest) -> arg0.instanceMethod(rest)` = `ClassName::instanceMethod`
+    - `(args) -> expr.instanceMethod(args)` = `expr::instanceMethod`
+  - `Default Method`로 선언된 여러 메소드를 이용 가능
+    - 역순: `list.sort(comparing(Apple::getWeight).reversed())`
+    - 조건추가: `list.sort(comparing(Apple::getWeight).thenComparing(Apple::getCountry))`
+    - 논리연산: `redApple.negate().and(apple -> apple.getWeight() > 150)`
+    - 합성: g(f(x)) = `f.andThen(g)` / f(g(x)) = `f.compose(g)`
+  
