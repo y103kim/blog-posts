@@ -101,3 +101,50 @@ tags: [Java]
     - 논리연산: `redApple.negate().and(apple -> apple.getWeight() > 150)`
     - 합성: g(f(x)) = `f.andThen(g)` / f(g(x)) = `f.compose(g)`
   
+# Chapter4. Introducing Stream
+
+- Iterator + Parallelism in **Declarative way**
+  - 선언적: 동작을 기술하고, 구현은 감춘다. `string.replace(/ /g, '-')`
+  - Threading과 Query를 분리한다. (DB 적인 접근) - 병렬화 쉬움
+  - Composable = 이어붙이기 쉽다.
+- 정의 : "a sequence of elements from a source that supports data-processing operations"
+  - 소스(Collections, arrays, I/O) -> 연속된 요소 -> 데이터 처리 동작(내부 루프) -> 파이프라이닝
+- Stream vs Collections
+  - Collection은 모든 요소를 메모리에 올림 / Stream은 필요한 요소만 메모리에 올림
+    - python의 generator처럼 필요할때 데이터를 계산해서 내어줌
+    - 다르게 표현하면: Lazily Constructed Collection
+  - 한번만 탐색 가능 iterator과 유사, 정확한 표현으로는 일회용
+  - Stream은 내부반복임
+- Stream 연산들
+  - 중간연산: 또다른 스트림을 리턴, 실제로 연산이 일어나지 않음(Lazy).
+  - 최종연산: 스트림이 아닌 다른 요소를 모아서 리턴, 연산이 일어남.
+
+# Chappter5. Working with streams
+
+- 중간 연산
+  - 필터링: `filter(Predicate)`, `distinct()`
+  - 슬라이싱: `takeWhile(Predicate)`, `dropWhile(Predicate)`, `limit(int)`, `skip(int)`
+  - 매핑: `map(A -> B)`, `flatmap(X -> stream<Y>)`
+- 최종 연산
+  - 매칭: `allMatch(Predicate)`, `anyMatch`, `NoneMatch`
+  - 검색(Optional 리턴): `findAny`, `findFirst`
+  - 리듀스: `T reduce(T, (T,T) -> T)`, `Optional<T> reduce((T,T) -> T)`
+  - 최대, 최소: `Optional<T> max((T,T) -> T)`
+- 상태에 따른 분류
+  - Stateful: `distinct`, `skip`, `limit`, `sorted`, `reduce`
+  - Stateless: 나머지
+- 숫자형 스트림
+  - 변환: `mapToInt`, `mapToDouble`, `mapToLong`
+  - 스트림: `IntStream`, `DoubleStream`, `LongStream`
+  - Optional로 반환될 경우: `OptionalInt`, `OptionalDouble`, `OptionalLong`
+  - 다시 일반 Stream으로 변환: `boxed()`
+  - 생성: `IntStream.rangeClosed(1, 100)`
+- 스트림 생성하기
+  - 값으로 부터 자동 생성 `Stream.of`, `Arrays.stream`
+  - Iterate
+    - `Stream.iterate(T, T -> T)`: 무한 실행(limit으로 제한 가능)
+    - `Stream.iterate(T, T -> boolean, T -> T)`: 조건까지 실행
+    - Iterate는 Immutable
+  - Generate
+    - `Stream.generate(() -> T)`
+    - generate는 mutable도 가능.
