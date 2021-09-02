@@ -130,7 +130,7 @@ tags: [Java]
   - 검색(Optional 리턴): `findAny`, `findFirst`
   - 리듀스: `T reduce(T, (T,T) -> T)`, `Optional<T> reduce((T,T) -> T)`
   - 최대, 최소: `Optional<T> max((T,T) -> T)`
-  - 다음 장에서 다룰 최종연산들: `collect`, `count`, `forEach`
+  - 다음 장에서 다룰 최종연산들: `collect`, `reduce`, `count`, `forEach`
 - 상태에 따른 분류
   - Stateful: `distinct`, `skip`, `limit`, `sorted`, `reduce`
   - Stateless: 나머지
@@ -168,7 +168,7 @@ tags: [Java]
   - `A`: Accumulated, 중간 누적 타입
   - `R`: 리턴 타입
 - 아래 메소드들 정의하면 `Collector`를 만드는 형태를 모듈화 할 수 있음
-  - `supplier`: 새 컨테이너 생성 `() -> A`
+  - `supplier`: 새 컨테이너 생성 `() -> A` 
   - `accumulator`: 컨테이너에 요소 추가 `(A, T) -> A`
   - `finisher`: 마지막 변환에 사용 `A -> R`
 - 추가로 정의해 병렬화에 이득을 볼 수 있는 메소드(분할 정복 이용함)
@@ -202,6 +202,42 @@ tags: [Java]
 - `partitioningBy`는 `groupingBy`의 특수한 케이스
   - true, false 두가지로 묶어줌
 
+# 추가 조사: reduce vs collect
 
+- Source: [Part1](https://youtu.be/oWlWEKNM5Aw), [Part2](https://youtu.be/H7VbRz9aj7c)
+- 일반적인 프로그래밍 패러다임
+  - functional = immutable types
+  - imperative = mutable types
+- Java has **mutable reduction**, **stateful operations** 
+  - becuase Java is OOP
+  - not classical function programming reduction
+- 몇가지 용어
+  - associatvie: 결합 법칙을 준수한다.
+  - stateless: 람다는 클로저로서 받아온 객체를 수정하지 말아야 한다.
+  - non-interfering: input으로 들어온 source를 수정하지 않는다.
+- `reduce()` vs `collect()`
+  - 두 함수은 거의 비슷함
+  - `accumlator`과 `combiner` 모두: associatve, non-interfering, stateless
+  - 둘다 입력 스트림을 고치면 안됨! (non-interfering)
+  - 두 함수는 호출 순서가 보존됨.
+  - reduce
+    - immutable reduction: 중간 결과도 고치면 안됨
+    - 1st arg: `identity` = 연산의 정의역 **값**, 모든 연산이 공유함, 즉 연산 중에 절대 변하면 안됨
+    - 2nd arg: `accumulator` = `Bifunction`, 새로운 값을 만들어서 리턴해야함
+    - 3rd arg: `combiner` = `BinaryOperator`, 새로운 값을 만들어서 리턴해야함
+  - collect
+    - mutable reduction: 중간 결과를 고칠 수 있음
+    - 1st arg: `supplier` = `Supplier<R>`, 빈 컨테이너를 생성하는 함수
+    - 2nd arg: `accumulator` = `BiConsumer`, 리턴이 없음, 중간 결과(첫번째 인자)를 고쳐야 함
+    - 3rd arg: `combiner` = `BiConsumer`, 리턴이 없음, 중간 결과(첫번째 인자)를 고쳐야 함
+- string concat은 매번 copy하므로 매우 느림
+  - reduce를 통해 immutable type인 `String`을 concat하면 매우 느림
+  - collect를 통해 mutable type인 `StringBuilder`로 append하면 빠름
 
+# 추가 조사: forEach, forEachOrdered, peek
+
+- `forEach`, `forEachOrdered`, `peek`은 stateful한 lambda를 입력으로 받을 수 있음.
+- 다른 모든 Stream API는 stateless를 요구함
+
+# Chapter7. Parallel streams
 
