@@ -119,7 +119,7 @@ tags: [Java]
   - 중간연산: 또다른 스트림을 리턴, 실제로 연산이 일어나지 않음(Lazy).
   - 최종연산: 스트림이 아닌 다른 요소를 모아서 리턴, 연산이 일어남.
 
-# Chappter5. Working with streams
+# Chapter5. Working with streams
 
 - 중간 연산
   - 필터링: `filter(Predicate)`, `distinct()`
@@ -130,6 +130,7 @@ tags: [Java]
   - 검색(Optional 리턴): `findAny`, `findFirst`
   - 리듀스: `T reduce(T, (T,T) -> T)`, `Optional<T> reduce((T,T) -> T)`
   - 최대, 최소: `Optional<T> max((T,T) -> T)`
+  - 다음 장에서 다룰 최종연산들: `collect`, `count`, `forEach`
 - 상태에 따른 분류
   - Stateful: `distinct`, `skip`, `limit`, `sorted`, `reduce`
   - Stateless: 나머지
@@ -148,3 +149,59 @@ tags: [Java]
   - Generate
     - `Stream.generate(() -> T)`
     - generate는 mutable도 가능.
+
+# Chapter6. Collecting data with stream
+
+- `Collector`: `collect` 함수의 인자 타입으로 주어지는 Functional Interface
+- `Collectors`: 팩토리 클래스, Collector를 반환하는 정적함수를 제공
+- `downstream`: 연쇄 호출
+  - `collectingAndThen`: Collector를 실행한 이후 Function을 연쇄
+  - `groupingBy`: classifier로 분류 한 이후, 또 다른 Collector를 연쇄
+  - `mapping`: mapper로 매핑 후, 또 다른 Collector를 연쇄
+  - `partitoningBy`: predicator를 기준으로 쪼갠 여러개를, Collector로 연쇄
+
+## Why factory design used in Collectors
+
+- 모듈화를 위해서!
+- 먼저 아래에서 공통을 쏘이는 타입들.
+  - `T`: Entity, 입력 스트림의 타입
+  - `A`: Accumulated, 중간 누적 타입
+  - `R`: 리턴 타입
+- 아래 메소드들 정의하면 `Collector`를 만드는 형태를 모듈화 할 수 있음
+  - `supplier`: 새 컨테이너 생성 `() -> A`
+  - `accumulator`: 컨테이너에 요소 추가 `(A, T) -> A`
+  - `finisher`: 마지막 변환에 사용 `A -> R`
+- 추가로 정의해 병렬화에 이득을 볼 수 있는 메소드(분할 정복 이용함)
+  - `combiner`: 컨테이너 합치기 `(A, A) -> A`
+  - `characteristics`: 셋중에 하나를 리턴
+    - `UNORDERED`: 누적, 방문의 순서가, Reduction 결과에 영향을 주지 않음
+    - `CONCURRENT`: 병행 처리를 해도 무방함.
+    - `IDENTIFY_FINISH`: `A == R`이므로 바로 리턴해도 무방.
+    - 단 정렬된 스트림은, 병행화시 `UNORDERED`, `CONCURRENT` 둘다 필요.
+
+## Collectors: Sum or Reduce
+
+- count: `counting()`
+- Min,Max: `maxBy(Comparator)`
+- Sum: `summingInt(T -> int)`
+- Average: `averagingInt(T -> int)`
+- Statistics: `summarizing(T -> int)`
+- Joining Strings: `joining()`, `joining(", ")`
+- General reducer
+  - `Optional<T>` 리턴: `reducing((T,T)->T)`
+  - 초기값 포함, `T` 리턴: `reducing(T, (T,T)->T)`
+  - Mapper까지 포함, `T` 리턴: `reducing(U, T->U, (U,U)->U))`
+
+## Collectors: Group
+
+- 기본 사용: `groupingBy(T->K)`
+  - 다음과 동작이 같음 `groupingBy(T->K, toList())`
+- 확장: `groupingBy(T->K, downtream)`
+- `groupingBy`를 여러번 중첩시키면 다중 분할이 가능함
+- `groupingBy`에 `count()`를 중첩시키면 하위 그룹의 개수 셀 수 있음.
+- `partitioningBy`는 `groupingBy`의 특수한 케이스
+  - true, false 두가지로 묶어줌
+
+
+
+
