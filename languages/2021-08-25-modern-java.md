@@ -241,3 +241,44 @@ tags: [Java]
 
 # Chapter7. Parallel streams
 
+- `parallel()`, `sequential()`로 스트림의 병렬성을 조절할 수 있음
+- Boolean flag여서, 마지막으로 호출된 것이 최종 효력을 발휘함.
+- 병렬이 항상 빠른것은 아니다.
+  - 병렬화 가능한 연산인지
+  - Shared State는 없는지
+  - 병렬화/쓰레드간 데이터 전송 비용에 비해 이득이 있는지
+- 중점적으로 볼 사항들.
+  - 순차/병렬 시간을 무조건 측정해 보아야 한다.
+  - Boxing에 드는 비용을 고려해야한다.
+  - 순서에 의존적인 `limit`과 `findFirst`는 거의 병렬이 느리다.
+  - `unordered()`를 부른 상태에서는 `limit`등이 훨씬 효율적이다.
+  - N의 수가 커야 병렬이 효율적이다.
+  - `SIZED` 속성의 스트림은 스트림을 쪼갤 수 있어서 효율적일 수 있다.
+
+## The fork/join framework
+
+- `RecursiveTask<R>`을 상속받아서 `coumpute`함수를 구현
+  - 일반적인 재귀 함수처럼, 종료조건, 분할후 재귀호출로 짜면 됨
+    - 먼저 종료조건을 먼저 체크해서, 만족하는 경우 순차적으로 처리 후 리턴
+    - 반으로 나눠서 두 `RecursiveTask`를 생성한 뒤에
+    - 왼쪽은 `fork()`해주고
+    - 오른쪽은 바로 `compute`해서 계산
+    - 이후 왼쪽 Task가 완료될 때 까지 `join()`으로 기다림
+    - 양쪽 결과를 합쳐서 리턴하면 끝.
+- 최종 실행시 `ForkJoinPool().invoke(task)`로 실행하면 됨.
+  - 일반적으로 `ForkJoinPool`은 한번만 static으로 생성함.
+- Work Stealing
+  - Thread 하나가 작업을 일찍 끝냈는데, 큐에 담긴 일이 없을 경우
+  - 다른 Thread의 큐에서 작업을 빼와서 실행한다.
+  - 때문에 약간 작은 Task 여러개로 나누는것이 균형잡힌 실행에 도움이 됨
+
+## Spliterator
+
+- 4개의 함수를 정의하면 구현할 수 있는 인터페이스
+  - `tryAdvance`: 순차처리 이후, 처리할 것이 남아있으면 `true`리턴
+  - `trySplit`: 현재 객체를 쪼갤 수 있으면, 생성해 리턴, 아니면 `null`리턴
+  - `estimateSize`: 현재 객체가 포함하는 요소의 사이즈
+  - `characteristics`: 다양한 특성 정의, Oring으로 쓸 수 있는 정수 플래그
+- Collection이 Spliterator 인것을 생각하면 
+  - 그 자체로 Container적인 속성을 띄어야 함
+  - 즉 데이터를 포함하고 있어야 하며, 위 4개 함수를 구현해야함
