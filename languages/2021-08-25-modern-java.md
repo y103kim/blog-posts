@@ -282,3 +282,28 @@ tags: [Java]
 - Collection이 Spliterator 인것을 생각하면 
   - 그 자체로 Container적인 속성을 띄어야 함
   - 즉 데이터를 포함하고 있어야 하며, 위 4개 함수를 구현해야함
+
+# Chapter8. Collection API enhancements
+
+- Before Java9
+  - `Array.asList`: immutable list
+  - No `asSet` function
+- Collection factories in Java9
+  - `List.of`: immutable list
+  - `Set.of`: immutable set 
+  - `Map.of`: immutable map 
+- Functions for List and set
+  - Collection 자체를 바꾸는 함수들로, immutable에 쓸 경우 예외 발생
+  - `removeIf`: Predicate를 만족하는 요소 삭제
+  - `replaceAll`: 각 요소들을 함수에 넣어서 변경함
+- Functions for Map
+  - `forEach`: k,v를 입력으로 받는 람다 실행, 리턴은 없음
+  - `entrySet`: k,v pair를 set으로 묶어서 리턴
+  - `getOrDefault`: python의 get과 동일
+  - `computeIfAbsent`: key 없으면 `K->V`로 set해줌
+  - `computeIfPresent`: key 있으면 `(K,V)->V`로 값 바꿈
+  - `compute`: 람다((K,V)->V)로 값 바꿈, 없으면 value로는 `null`들어옴
+  - `remove`: key와 value 모두 매칭될 때 삭제하는 기능 있음
+  - `replaceAll`: 모든 값을 바꿈
+  - `putAll`: 다른 map을 다 밀어넣음(덮어씀)
+  - `merge`: key와 value를 set할때, 겹치면 `(V,V)->V`를 불러줌
