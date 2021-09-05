@@ -10,7 +10,7 @@ tags: [Java]
 - Java 8 = 함수형 프로그래밍으로의 변화
 - 아래는 주요 5가지로 정리.
 
-## Behavior parameterization
+### Behavior parameterization
 
 - 기존 자바의 함수는 first-class object가 아님 = 값으로 다룰 수 없음
   - 동작을 인자로 넣고 싶을때..
@@ -21,7 +21,7 @@ tags: [Java]
 - Lambda, Method 참조 등으로 구현해냄
 - `Predicate<T>` 타입 등의 Functional Interface를 통해서 함수를 대입받음
 
-## Stream API
+### Stream API
 
 - 파이프라이닝, Concurrency를 손쉽게 추구
 - Concurrency의 선행조건
@@ -32,7 +32,7 @@ tags: [Java]
   - Groupping(두 그룹으로 분리)
   - Extracting(일부 필드 뽑기)
 
-## 나머지
+### 나머지
 
 - Default Method
   - 기존 class 구현을 변경하지 않고도, Interface에 함수를 추가하고 싶다.
@@ -160,7 +160,7 @@ tags: [Java]
   - `mapping`: mapper로 매핑 후, 또 다른 Collector를 연쇄
   - `partitoningBy`: predicator를 기준으로 쪼갠 여러개를, Collector로 연쇄
 
-## Why factory design used in Collectors
+### Why factory design used in Collectors
 
 - 모듈화를 위해서!
 - 먼저 아래에서 공통을 쏘이는 타입들.
@@ -179,7 +179,7 @@ tags: [Java]
     - `IDENTIFY_FINISH`: `A == R`이므로 바로 리턴해도 무방.
     - 단 정렬된 스트림은, 병행화시 `UNORDERED`, `CONCURRENT` 둘다 필요.
 
-## Collectors: Sum or Reduce
+### Collectors: Sum or Reduce
 
 - count: `counting()`
 - Min,Max: `maxBy(Comparator)`
@@ -192,7 +192,7 @@ tags: [Java]
   - 초기값 포함, `T` 리턴: `reducing(T, (T,T)->T)`
   - Mapper까지 포함, `T` 리턴: `reducing(U, T->U, (U,U)->U))`
 
-## Collectors: Group
+### Collectors: Group
 
 - 기본 사용: `groupingBy(T->K)`
   - 다음과 동작이 같음 `groupingBy(T->K, toList())`
@@ -202,7 +202,7 @@ tags: [Java]
 - `partitioningBy`는 `groupingBy`의 특수한 케이스
   - true, false 두가지로 묶어줌
 
-# 추가 조사: reduce vs collect
+### 추가 조사: reduce vs collect
 
 - Source: [Part1](https://youtu.be/oWlWEKNM5Aw), [Part2](https://youtu.be/H7VbRz9aj7c)
 - 일반적인 프로그래밍 패러다임
@@ -234,7 +234,7 @@ tags: [Java]
   - reduce를 통해 immutable type인 `String`을 concat하면 매우 느림
   - collect를 통해 mutable type인 `StringBuilder`로 append하면 빠름
 
-# 추가 조사: forEach, forEachOrdered, peek
+### 추가 조사: forEach, forEachOrdered, peek
 
 - `forEach`, `forEachOrdered`, `peek`은 stateful한 lambda를 입력으로 받을 수 있음.
 - 다른 모든 Stream API는 stateless를 요구함
@@ -255,7 +255,7 @@ tags: [Java]
   - N의 수가 커야 병렬이 효율적이다.
   - `SIZED` 속성의 스트림은 스트림을 쪼갤 수 있어서 효율적일 수 있다.
 
-## The fork/join framework
+### The fork/join framework
 
 - `RecursiveTask<R>`을 상속받아서 `coumpute`함수를 구현
   - 일반적인 재귀 함수처럼, 종료조건, 분할후 재귀호출로 짜면 됨
@@ -272,7 +272,7 @@ tags: [Java]
   - 다른 Thread의 큐에서 작업을 빼와서 실행한다.
   - 때문에 약간 작은 Task 여러개로 나누는것이 균형잡힌 실행에 도움이 됨
 
-## Spliterator
+### Spliterator
 
 - 4개의 함수를 정의하면 구현할 수 있는 인터페이스
   - `tryAdvance`: 순차처리 이후, 처리할 것이 남아있으면 `true`리턴
@@ -308,7 +308,7 @@ tags: [Java]
   - `putAll`: 다른 map을 다 밀어넣음(덮어씀)
   - `merge`: key와 value를 set할때, 겹치면 `(V,V)->V`를 불러줌
 
-## 추가조사: Java의 Collection들
+### 추가조사: Java의 Collection들
 
 - 기본 사항들
   - `Concurrent`: 읽기에는 Lock을 걸지 않고 쓰기 시 해당 자원(버킷)에만 Lock을 건다.
