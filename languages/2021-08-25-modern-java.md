@@ -307,3 +307,30 @@ tags: [Java]
   - `replaceAll`: 모든 값을 바꿈
   - `putAll`: 다른 map을 다 밀어넣음(덮어씀)
   - `merge`: key와 value를 set할때, 겹치면 `(V,V)->V`를 불러줌
+
+## 추가조사: Java의 Collection들
+
+- 기본 사항들
+  - `Concurrent`: 읽기에는 Lock을 걸지 않고 쓰기 시 해당 자원(버킷)에만 Lock을 건다.
+  - `CopyOnWrite`: Fork시에 대상 쓰레드로 카피하지 않고, 실제 쓰기가 일어날때만 카피한다. 읽기에 유리함.
+- List
+  - `ArrayList`, `CopyOnWriteArrayList`: c++ vector처럼 가변 길이 배열
+  - `LinkedList`: 연결리스트
+- Set/Map
+  - `HashSet/Map`,`ConcurrentHashMap`: Hash Table 기반
+  - `LinkedHashSet/Map`: 순서 보존하는 Hash Table 기반
+  - `EnumSet/Map`: Bit Vector 기반
+  - `TreeSet/Map`: RB-tree 기반
+  - `CopyOnWriteArraySet`: contains이 `O(n)`, 쓰레드에서 iterative하게 읽을때 유용
+  - `ConcurrentSkipListSet/Map`: 2의 배수 크기마다 skip-node가 생기는 스킵리스트
+  - `IdentityHashMap`: hash지정 규칙 재정의 가능
+  - `WeakHashMap`: K,V가 임의로 GC 될 수 있음
+- Queue
+  - `PriorityQueue`: binary heap을 이용, 삭제가 `O(n)`이므로 주의
+  - `ArrayDequeue`: 가변길이 배열을 이용한 덱인듯, 삭제가 `O(n)`이므로 주의 
+  - `ConcurrentLinkedQueue`: Exactly-once 읽기가 불가능
+  - `ArrayBlockingQueue`: Exactly-once 읽기가 가능, 그러나 읽기시에도 락검
+  - `PriorirityBlockingQueue`: 마찬가지로, 쓰기 읽기 모두 락 걸고 동작
+  - `LinkedBlockingQueue`: 마찬가지로, 쓰기 읽기 모두 락 걸고 동작
+  - `SynchronousQueue`: 아예 버퍼가 없어서, 쓰는쪽이 읽어갈때 까지 polling
+  - `DelayQeue`: 시간을 지연시킬 수 있는 큐, 시간을 키 값으로 한 Heap을 베이스로 함
