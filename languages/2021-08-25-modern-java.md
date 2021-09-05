@@ -1,6 +1,6 @@
 ---
 layout: post
-category: development
+category: languages 
 title: Modern Java in Action 정리 
 tags: [Java]
 ---
@@ -334,3 +334,57 @@ tags: [Java]
   - `LinkedBlockingQueue`: 마찬가지로, 쓰기 읽기 모두 락 걸고 동작
   - `SynchronousQueue`: 아예 버퍼가 없어서, 쓰는쪽이 읽어갈때 까지 polling
   - `DelayQeue`: 시간을 지연시킬 수 있는 큐, 시간을 키 값으로 한 Heap을 베이스로 함
+
+
+# Chapter9. Refactoring, testing, and debugging
+
+- Refactoring: 3 ways
+  - anonymous classes -> lambdas
+  - lambdas -> method references
+  - imperative-style -> streams
+- improving code flexibility
+  - Functional interface 사용
+  - Conditional deferred execution
+    - If문을 함수로 분리하고, 람다를 보내기
+
+
+### refactoring OOP design patterns
+
+- strategy pattern
+  - 간략한 정리
+    - 행위를 추상/구체화하는 패턴
+    - concrete strategy class를 정의해서 사용
+  - java8에서는 lambda로 행동을 정의해서 바로 넣어주면 됨
+- template method pattern
+  - 간략한 정리
+    - abstract class가 대부분의 구현을 가지고 있고,
+    - concrete class는 일부 추상 메소드만 구현
+  - Java8에서는 상속받지 않고, 그냥 람다를 넘겨주는 식으로 구현할 수 있다.
+- observer pattern
+  - 간략한 정리
+    - 이벤트가 일어나는 것을 감시하는 패턴
+    - Observer 인터페이스는 notfiy를 구현할 것을 강제함
+    - ConcreteObserver는 각각 notfiy를 구현해 이벤트 발생시 동작을 정의
+    - Subject클래스에 여러 Observer 인스턴스를 등록
+    - 이벤트 발생시 모든 Observer를 순회하면 notify를 호출
+  - Java8에서는 Observer 자체를 lambda로 바꿀 수 있다.
+- Chain of responsibility pattern
+  - 간략한 정리
+    - 어떤 문제에 대해 처리한 후, 나머지를 등록된 다음 클래스로 넘김
+    - 약간 함수형 프로그래밍 비슷해짐
+  - `UnaryOperator`등의 Interface에 정의된 `andThen`에 람다들을 넘겨서 연쇄
+- Factory 패턴
+  - 간략한 정리
+    - 함수 호출과 인자 구성으로 서로 다른 객체를 생성함
+  - Java8에서는 map에 람다를 값으로 집어넣어 구성할 수도 있다.
+
+### Testing and debugging
+
+- 람다 테스트 방법
+  - 변수로 따로 저장해서 테스트 하거나
+  - 람다를 사용하는 메서드를 검증하거나
+  - 복잡한 람다를 몇몇 메서드로 나누거나
+- 디버깅
+  - 람다는 익명이라, 함수이름이 안나와서 디버깅에 어려움이 있음
+  - 메소드 래퍼런스를 쓰면 이름이 나오므로 권장됨
+  - 스트림의 디버깅시에는 peek을 써주면 유용함
