@@ -5,7 +5,7 @@ title: Modern Java in Action 정리
 tags: [Java]
 ---
 
-# Chaper1. Introduction
+# Chapter 1. Introduction
 
 - Java 8 = 함수형 프로그래밍으로의 변화
 - 아래는 주요 5가지로 정리.
@@ -45,7 +45,7 @@ tags: [Java]
 - FP적인 요소들
   - Optional, Reactive, Future 등이 도입됨.
 
-# Chapter2. Behavior Parameterization
+# Chapter 2. Behavior Parameterization
 
 - `List<Apple>`에서 녹색사과 고르기 예제
   - 조건을 파라미터화 하거나 일일이 구현해 주는것이 코드 복잡성을 증가시킴
@@ -53,7 +53,7 @@ tags: [Java]
   - 결국 람다나, 메소드 참조로 해결하게 됨.
 - 실제로 `Testable`, `Runnable`, `Callable`등을 쓸 때 람다를 넘기면 유용함.
 
-# Chapter3. Lambda Expression
+# Chapter 3. Lambda Expression
 
 - 기본적으로 다른 언어에서 사용되는 람다와 거의 같음
   - 다만 외부변수는 `final` 혹은 실질적 `final` 상태이어야 함
@@ -101,7 +101,7 @@ tags: [Java]
     - 논리연산: `redApple.negate().and(apple -> apple.getWeight() > 150)`
     - 합성: g(f(x)) = `f.andThen(g)` / f(g(x)) = `f.compose(g)`
   
-# Chapter4. Introducing Stream
+# Chapter 4. Introducing Stream
 
 - Iterator + Parallelism in **Declarative way**
   - 선언적: 동작을 기술하고, 구현은 감춘다. `string.replace(/ /g, '-')`
@@ -119,7 +119,7 @@ tags: [Java]
   - 중간연산: 또다른 스트림을 리턴, 실제로 연산이 일어나지 않음(Lazy).
   - 최종연산: 스트림이 아닌 다른 요소를 모아서 리턴, 연산이 일어남.
 
-# Chapter5. Working with streams
+# Chapter 5. Working with streams
 
 - 중간 연산
   - 필터링: `filter(Predicate)`, `distinct()`
@@ -150,7 +150,7 @@ tags: [Java]
     - `Stream.generate(() -> T)`
     - generate는 mutable도 가능.
 
-# Chapter6. Collecting data with stream
+# Chapter 6. Collecting data with stream
 
 - `Collector`: `collect` 함수의 인자 타입으로 주어지는 Functional Interface
 - `Collectors`: 팩토리 클래스, Collector를 반환하는 정적함수를 제공
@@ -239,7 +239,7 @@ tags: [Java]
 - `forEach`, `forEachOrdered`, `peek`은 stateful한 lambda를 입력으로 받을 수 있음.
 - 다른 모든 Stream API는 stateless를 요구함
 
-# Chapter7. Parallel streams
+# Chapter 7. Parallel streams
 
 - `parallel()`, `sequential()`로 스트림의 병렬성을 조절할 수 있음
 - Boolean flag여서, 마지막으로 호출된 것이 최종 효력을 발휘함.
@@ -283,7 +283,7 @@ tags: [Java]
   - 그 자체로 Container적인 속성을 띄어야 함
   - 즉 데이터를 포함하고 있어야 하며, 위 4개 함수를 구현해야함
 
-# Chapter8. Collection API enhancements
+# Chapter 8. Collection API enhancements
 
 - Before Java9
   - `Array.asList`: immutable list
@@ -336,7 +336,7 @@ tags: [Java]
   - `DelayQeue`: 시간을 지연시킬 수 있는 큐, 시간을 키 값으로 한 Heap을 베이스로 함
 
 
-# Chapter9. Refactoring, testing, and debugging
+# Chapter 9. Refactoring, testing, and debugging
 
 - Refactoring: 3 ways
   - anonymous classes -> lambdas
@@ -388,3 +388,32 @@ tags: [Java]
   - 람다는 익명이라, 함수이름이 안나와서 디버깅에 어려움이 있음
   - 메소드 래퍼런스를 쓰면 이름이 나오므로 권장됨
   - 스트림의 디버깅시에는 peek을 써주면 유용함
+
+# Chapter 10. Domain-specific languages using lambdas
+
+- DSL: 특정 도메인을 위해 만들어진 언어(Ant, Maven, HTML)
+  - 읽기 쉽고, 이해하기 쉽게: 여러번 읽혀질 것을 염두해 두고 디자인됨 
+- 장점
+  - Conciseness, Redability, Maintainability
+  - 높은 수준의 추상화, 관심의 분리
+- 단점
+  - Difficulty of DSL Design, Development cost
+  - 부가적인 레이어 생김, 학습 부담, 프로그래밍 언어적 제한
+- 종류
+  - Internal DSL: Java로 직접 DSL 작성
+  - Polyglot DSL: JVM에서 도는 다른 언어들(Scala, Kotlin)로 DSL 작성
+  - External DSL: 완전히 다른 새로운 언어로 DSL을 제공
+- DSL 패턴
+  - Method Chaining
+    - 인자를 늘리는 대신, 전치사나, 동작 하나하나를 연쇄된 함수로 제공
+    - 쓰는 입장에서는, 읽기 편하고, 분명한 코드를 작성할 수 있음.
+    - builder를 제공하는 쪽에서는 복잡하고 많은 코드를 작성해주어야함
+  - Nested Function 
+    - 연쇄 체인이 리턴해 주는 대신, 사용자가 직접 중첩해서 사용하게 함
+    - 괄호가 좀 더 많아지고, 파라미터를 추가해주기 어려움
+    - postional argument를 사용자가 다 읽혀야함, IDE 도움을 받기 어려움
+    - 구조가 더 잘 드러나고, 논리적으로 도메인 객체를 이해하기 쉬워짐
+  - Lambda Sequencing
+    - chain을 제공하되, 람다 함수의 입력인자로 제공함
+    - 파라미터 추가도 용이하고, 사용자가 좀더 유연하게 행동을 바꿀 수 있음
+  - 위 3가지를 적절히 조합해서 쓸 수도 있음
