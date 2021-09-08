@@ -417,3 +417,41 @@ tags: [Java]
     - chain을 제공하되, 람다 함수의 입력인자로 제공함
     - 파라미터 추가도 용이하고, 사용자가 좀더 유연하게 행동을 바꿀 수 있음
   - 위 3가지를 적절히 조합해서 쓸 수도 있음
+
+# Chapter 11. Using Optional as a better alternative to null
+
+- `null`처리는 코드를 지저분하게 만들고, 실수할 여지가 크다.
+  ```java
+  // Dangerous for null exceptions
+  person.getCar().getName();
+  // Safe by Optional
+  person.flatMap(Person::getCar).map(Car::getName).orElse("Unknown")
+  ```
+- 여러가지 해법들
+  - `?.`처럼 safe navigation operation 이용
+  - `Maybe`등 Wrapping 타입을 도입
+- `Optional`
+  - 값이 있을 경우: `Optional<Car>` 오브젝트를 Optional이 wrapping한다.
+  - 값이 없을 경우: `Optional.empty()` 결과인 싱글톤 객체를 리턴한다.
+- 장점들
+  - 값이 비어있을 수 있다는 문맥적인 표현을 코드로 할 수 있다.
+  - Optional이 안쓰인다면, 무조건 값이 있다는 인상을 주게 사용할 수 있다.
+- 단점들
+  - Wrapping 비용이 늘어나고
+  - Serializable 하지 않다.
+  - Primitive Optional은 여러 제약이 많아서 사용을 추천하지 않는다.
+- 생성
+  - `Optional.empty()`
+  - `Optional.of(car)`
+  - `Optional.ofNullable(car)`
+- 값 읽기
+  - `optInstance.map(...)`: `Optional` 타입으로 리턴함
+  - `optInstance.flatMap(...)`: Optional이 중첩될 경우
+  - `orElse`: 값이 없을 경우를 정해줌으로서, optional을 벗길 수 있음
+  - 스트림에 `flatMap(Optional::stream)`을 쓰면, 빈 요소 제외 후 값 활용 가능
+  - `get`:값이 없을 때 예외가 발생하므로, 주의해야함
+  - `orElseGet`: 값 대신 람다(Suplier)를 넘길 수 있음
+  - `orElseThrow`: 값 없을 때 명시적 예외 발생, 예외 생성 람다 넘길수 있음
+  - `ifPresend`: 값이 존재할 때만 람다(Consumer) 수행
+  - `ifPresendOrElse`: 값에 존재 유무에 따라, 람다 수행
+  - `filter`: 값이 없거나, 조건을 만족하지 못하면, `Optional.empty()`
