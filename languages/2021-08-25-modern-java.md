@@ -455,3 +455,24 @@ tags: [Java]
   - `ifPresend`: 값이 존재할 때만 람다(Consumer) 수행
   - `ifPresendOrElse`: 값에 존재 유무에 따라, 람다 수행
   - `filter`: 값이 없거나, 조건을 만족하지 못하면, `Optional.empty()`
+
+# Chapter 12. New Date and Time API
+
+- Java8 이전의 Date API가 매우 좋지 못했음
+- Java8 이후 합리적으로 라이브러리가 개선되었음
+- 타임존 정보 없는 날짜/시각 객체 생성
+  - `LocalDate.of`, `LocalTime.of`, `LocalDateTime.of`
+  - `LocalDate.parse`, `LocalTime.parse`, `LocalDateTime.parse`
+- 타임존 추가한 시각 객체 생성
+  - 타임존 객체: `ZoneId.of("Europe/Rome")`
+  - `ZonedDateTime.of`, `ZonedDateTime.parse`
+  - 타임존 부여: `localDateTime.atZone(ZoneId)`
+- 각 시각 객체들은 `now`도 지원함 
+- `format`함수에 포맷터를 집어넣어서 출력 가능
+- UTC기준 ns단위 타임스탬프는 `Instant` 객체를 사용
+  - 생성: `Instanct.ofEpochSecond`, `Instanct.ofEpochMili`
+  - 타임존 부여: `instant.atZone(ZoneId)`
+- 시간 차이는 `Duration`, 날짜 차이는 `Period`
+  - `Duration.between`, `Duration.ofDays`
+- Date/Time 객체를 잠시 바꾸려면 `with`사용
+  - `date.with(new NextWorkingDay())`
