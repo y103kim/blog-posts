@@ -476,3 +476,52 @@ tags: [Java]
   - `Duration.between`, `Duration.ofDays`
 - Date/Time 객체를 잠시 바꾸려면 `with`사용
   - `date.with(new NextWorkingDay())`
+
+# Chapter 13. Default methods
+
+- Default Method
+  - 기존 class 구현을 변경하지 않고도, Interface에 함수를 추가하고 싶다.
+  - 인터페이스에 함수 구현을 추가해버리자.
+    - class에서 오버라이딩 하지 않아도 무방하고
+    - 설사 겹치더라도, 클래스의 구현이 우선시됨
+- Interface에 대한 조언
+  - Minimal
+  - Orthogonal functionality
+- 다중상속으로 인한 충돌이 생기는 경우, 반드시 해결해야 컴파일 가능
+
+# Chapter 14. Java Module System
+
+- Why Module? - 2가지 디자인 원지
+  - Seperation of concerns - 관련성을 바탕으로 코드를 캡슐화함
+  - Information hiding - 외부 변화로 인한 영향을 받지 않도록 정보를 은닉
+
+### 왜 Java module이 도입되었나.
+
+- 모듈화를 위한 기능적 지원이 부족함
+  - package 간의 가시성 제어 불가능
+    - `public`: 모두가 볼 수 있다.
+    - `private`: 클래스 내에서만 볼 수 있다.
+    - `그러면 A 패키지의 내용을 B
+  - classpath의 한계(1): 버전 구분 불가
+    - 같은 이름의 클래스가 classpath내에 존재 = randomly selected
+  - classpath의 한계(2):명시적 의존성 부여 불가
+    - 어떤 클래스가 빠져있는지, 충돌이 나는지 실행하기 전까지 알 수 없다.
+    - Maven이나 Gradle로 해결 가능하나, Module이 더 나은 해결책이 됨
+- JDK가 monolithic하다
+  - JDK의 크기가 커질수록 문제가 됨.
+
+### Java modules: the big picture
+
+- 3개 키워드 사용: `module`, `exports`, `requires`
+- `module-info.java` 가 `module-info.class`로 컴파일됨
+  - 해당 파일은 모듈의 루트 위치에 있어야 함.
+  - `module` 모듈 이름과, 뒤 따라오는 block애 `exports`, `requires` 기입
+  - `exports`: 다른 모듈에 공개할 패키지 기입
+  - `requires`: 필요한 다른 모듈의 이름 기입
+  - `requires static`: 다른 모듈이 필요하지만, 정적으로만 쓸 경우
+  - `requires transitive`: 이 모듈을 사용하는 다른 모듈 또한, 대상을 사용 가능
+  - `exports packageA to packageB`: 특정 모듈에만패키지 공개
+  - `open`: 모듈 전체를 개방(개발시에 유용)
+  - `opens`: 특정 패키지를 전체에 개방
+  - `opens package to modules`: 특정 패키지를 특정 모듈에 개방
+  - `provides interface with class`: *보충 필요*
