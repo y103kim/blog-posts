@@ -525,3 +525,29 @@ tags: [Java]
   - `opens`: 특정 패키지를 전체에 개방
   - `opens package to modules`: 특정 패키지를 특정 모듈에 개방
   - `provides interface with class`: *보충 필요*
+
+# Chapter 15 Concepts behind CompletableFuture and reactive programming
+
+- 두가지 아이디어 CompletableFuture, Flow APIs
+   - publish-subscribe protocol로 reactive 프로그래밍 구현
+- Java의 기존 병행처리 기법: ExecutorService
+   - 정적 개수의 ThreadPool을 만듬, 재사용 가능
+   - FIFO Queue로 들어온 Task를 처리
+   - 다만, Sleep, IO, Network 대기상태에서 Blocking됨
+- 대안1: `Future`
+  - js의 Promise와 유사함
+  - `Executor.submit` 에서 리턴 받은 결과
+  - 결과를 얻으려면, `future.get()`으로 동기화 해야함.
+  - 에러처리, 체이닝 등 기능이 부족함
+  - 체이닝이 불가하기에 기다리는 쓰레드는 무조건 미리 만들어서 대기해야함
+    - `a+b`상황이라면 `a`, `b`, `+` 쓰레드 3개가 떠야하고
+    - `+` 쓰레드는 `a`, `b`가 모두 끝나길 기다려야하므로 낭비된다.
+- 대안2: `CompletableFuture`
+  - `js`의 Promise와 거의 유사하다.
+  - 에러처리, 체이닝 등의 기능이 포함되어 있다.
+- 대안3: `Reactive`
+  - 여러번 호출되는 비동기 함수들 바탕으로 데이터 처리
+  - pub-sub 모델로 메시지가 전달됨
+  - 성공, 예외, 완료시의 callback을 넘김
+  - 너무 많은 msg가 발행되는 경우(High-Pressure)
+    - 이런 경우를 대비하여 `Subscription`을 통해 피드백을 줌(Backpressure)
