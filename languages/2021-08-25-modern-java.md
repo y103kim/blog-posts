@@ -551,3 +551,21 @@ tags: [Java]
   - 성공, 예외, 완료시의 callback을 넘김
   - 너무 많은 msg가 발행되는 경우(High-Pressure)
     - 이런 경우를 대비하여 `Subscription`을 통해 피드백을 줌(Backpressure)
+
+# Chapter 16 CompletableFuture: composable asynchronous programming
+
+- 생성(Factories)
+  - `supplyAsync`: `suplier`기반으로 생성, Executor 지정 가능
+  - `runAsync`: `Runnable`기반으로 생성, Executor 지정 가능
+  - `allOf`, `anyOf`: 여러 Future들을 조합해서 생성
+- Chaining
+  - `thenApply`: `T->S`를 수행
+  - `thenCompose`: CFuture를 생성해 이어지는 다른 async 작업 수행
+  - `thenCombine`: 두개의 CFuture를 이용하는 콜백 수행
+  - `thenRun`: `()->void`를 수행
+  - `thenAccept`: `T->void`를 수행, 입력값을 소모하고 비움
+- Stream 처리
+  - List of future stream을 생성하고
+  - 그 stream에 `forEach`로 join이나 get을 불러주면 된다.
+  - 연쇄 함수들을 활용해서, 변환, 조합등이 가능하다.
+  - `orTimeout`, `completeOnTimeout`을 통해서 타임아웃 지정 가능
