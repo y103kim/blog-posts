@@ -569,3 +569,36 @@ tags: [Java]
   - 그 stream에 `forEach`로 join이나 get을 불러주면 된다.
   - 연쇄 함수들을 활용해서, 변환, 조합등이 가능하다.
   - `orTimeout`, `completeOnTimeout`을 통해서 타임아웃 지정 가능
+
+# Chapter 17 Reactive Programming
+
+- Why?: 고부하 상황에서도, 적응 장애로 사용자에게 응답 가능하기 위해서.
+- Reactive Manifesto
+  - Responsive: 유저 입력에 대한 빠른 반응
+  - Resilient: 높은 부하에도 반응성의 유지되어야함
+  - Elastic: 부하에 따라 자원을 조정할 수 있어야 함
+  - Message-driven: 메시지 기반으로 동작
+- `interface Publisher<T>`
+  - `subscribe(Subscriber<T>)`: 등록
+- `interface Subscriber<T>`
+  - `onSubscribe(Subscription s)`: 처음 등록된 후에 Publisher가 불러줌
+  - `onNext(T)`: Subscription이 불러서 메시지 전달해줌
+  - `onError(Throwable)`: Subscription이 불러서 에러 상황에서 호출함
+  - `onComplete()`: 메시지를 다 주었을때(n개보다 작더라도) 부름
+- `interface Subscription`
+  - `request(long n)`: Subscriber가 Subscription에 n개의 메시지를 달라고 요청
+  - `cancel`: Subscriber가 Subscription에 더이상 메시지을 주지 말라고 요청
+- Flow의 여러 규칙들
+  - 이하 P(Publisher), S(Subscriber), X(Subscription)
+  - S가 P에게 `request(n)`으로 Backpressure를 행사한다.
+    - P는 S가 X를 통해 요청한 n보다 작거나 같은 메시지를 보낸다.
+  - P는 onComplete나 onError를 통해 X를 종료할 수 있다.
+    - 종료 이후 P는 어떠한 추가 호출을 하지 않는다.
+    - 종료 이후 X는 cancel된 것으로 간주한다.
+    - S는 임의의 시점에 종료될 수 있음을 고려해야 한다.
+  - S가 `X.cancel`는 멱등성을 지니고, Thread-safe하다.
+    - 즉 여러번 호출해도 의도대로 동작한다.
+    - X를 취소한 후에도, onNext로 메시지를 받을 수 있다.
+    - 한번 cancel된 X에 다른 쓰레드가 요청해도 동작하지 않음이 보장된다.
+  - 같은 Subscriber로 여러번 구독하는것은 권장되지 않는다.
+- RxJava는 따로 정리하기
