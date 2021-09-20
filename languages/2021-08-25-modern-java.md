@@ -5,7 +5,7 @@ title: Modern Java in Action 정리
 tags: [Java]
 ---
 
-# Chapter 1 Introduction
+# Introduction
 
 - Java 8 = 함수형 프로그래밍으로의 변화
 - 아래는 주요 5가지로 정리.
@@ -45,7 +45,7 @@ tags: [Java]
 - FP적인 요소들
   - Optional, Reactive, Future 등이 도입됨.
 
-# Chapter 2 Behavior Parameterization
+# Behavior Parameterization
 
 - `List<Apple>`에서 녹색사과 고르기 예제
   - 조건을 파라미터화 하거나 일일이 구현해 주는것이 코드 복잡성을 증가시킴
@@ -53,7 +53,7 @@ tags: [Java]
   - 결국 람다나, 메소드 참조로 해결하게 됨.
 - 실제로 `Testable`, `Runnable`, `Callable`등을 쓸 때 람다를 넘기면 유용함.
 
-# Chapter 3 Lambda Expression
+# Lambda Expression
 
 - 기본적으로 다른 언어에서 사용되는 람다와 거의 같음
   - 다만 외부변수는 `final` 혹은 실질적 `final` 상태이어야 함
@@ -101,7 +101,7 @@ tags: [Java]
     - 논리연산: `redApple.negate().and(apple -> apple.getWeight() > 150)`
     - 합성: g(f(x)) = `f.andThen(g)` / f(g(x)) = `f.compose(g)`
   
-# Chapter 4 Introducing Stream
+# Introducing Stream
 
 - Iterator + Parallelism in **Declarative way**
   - 선언적: 동작을 기술하고, 구현은 감춘다. `string.replace(/ /g, '-')`
@@ -119,7 +119,7 @@ tags: [Java]
   - 중간연산: 또다른 스트림을 리턴, 실제로 연산이 일어나지 않음(Lazy).
   - 최종연산: 스트림이 아닌 다른 요소를 모아서 리턴, 연산이 일어남.
 
-# Chapter 5 Working with streams
+# Working with streams
 
 - 중간 연산
   - 필터링: `filter(Predicate)`, `distinct()`
@@ -150,7 +150,7 @@ tags: [Java]
     - `Stream.generate(() -> T)`
     - generate는 mutable도 가능.
 
-# Chapter 6 Collecting data with stream
+# Collecting data with stream
 
 - `Collector`: `collect` 함수의 인자 타입으로 주어지는 Functional Interface
 - `Collectors`: 팩토리 클래스, Collector를 반환하는 정적함수를 제공
@@ -239,7 +239,7 @@ tags: [Java]
 - `forEach`, `forEachOrdered`, `peek`은 stateful한 lambda를 입력으로 받을 수 있음.
 - 다른 모든 Stream API는 stateless를 요구함
 
-# Chapter 7 Parallel streams
+# Parallel streams
 
 - `parallel()`, `sequential()`로 스트림의 병렬성을 조절할 수 있음
 - Boolean flag여서, 마지막으로 호출된 것이 최종 효력을 발휘함.
@@ -283,7 +283,7 @@ tags: [Java]
   - 그 자체로 Container적인 속성을 띄어야 함
   - 즉 데이터를 포함하고 있어야 하며, 위 4개 함수를 구현해야함
 
-# Chapter 8 Collection API enhancements
+# Collection API enhancements
 
 - Before Java9
   - `Array.asList`: immutable list
@@ -336,7 +336,7 @@ tags: [Java]
   - `DelayQeue`: 시간을 지연시킬 수 있는 큐, 시간을 키 값으로 한 Heap을 베이스로 함
 
 
-# Chapter 9 Refactoring, testing, and debugging
+# Refactoring, testing, and debugging
 
 - Refactoring: 3 ways
   - anonymous classes -> lambdas
@@ -389,7 +389,7 @@ tags: [Java]
   - 메소드 래퍼런스를 쓰면 이름이 나오므로 권장됨
   - 스트림의 디버깅시에는 peek을 써주면 유용함
 
-# Chapter 10 Domain-specific languages using lambdas
+# Domain-specific languages using lambdas
 
 - DSL: 특정 도메인을 위해 만들어진 언어(Ant, Maven, HTML)
   - 읽기 쉽고, 이해하기 쉽게: 여러번 읽혀질 것을 염두해 두고 디자인됨 
@@ -418,7 +418,7 @@ tags: [Java]
     - 파라미터 추가도 용이하고, 사용자가 좀더 유연하게 행동을 바꿀 수 있음
   - 위 3가지를 적절히 조합해서 쓸 수도 있음
 
-# Chapter 11 Using Optional as a better alternative to null
+# Using Optional as a better alternative to null
 
 - `null`처리는 코드를 지저분하게 만들고, 실수할 여지가 크다.
   ```java
@@ -456,7 +456,7 @@ tags: [Java]
   - `ifPresendOrElse`: 값에 존재 유무에 따라, 람다 수행
   - `filter`: 값이 없거나, 조건을 만족하지 못하면, `Optional.empty()`
 
-# Chapter 12 New Date and Time API
+# New Date and Time API
 
 - Java8 이전의 Date API가 매우 좋지 못했음
 - Java8 이후 합리적으로 라이브러리가 개선되었음
@@ -477,7 +477,7 @@ tags: [Java]
 - Date/Time 객체를 잠시 바꾸려면 `with`사용
   - `date.with(new NextWorkingDay())`
 
-# Chapter 13 Default methods
+# Default methods
 
 - Default Method
   - 기존 class 구현을 변경하지 않고도, Interface에 함수를 추가하고 싶다.
@@ -489,7 +489,7 @@ tags: [Java]
   - Orthogonal functionality
 - 다중상속으로 인한 충돌이 생기는 경우, 반드시 해결해야 컴파일 가능
 
-# Chapter 14 Java Module System
+# Java Module System
 
 - Why Module? - 2가지 디자인 원지
   - Seperation of concerns - 관련성을 바탕으로 코드를 캡슐화함
@@ -526,7 +526,7 @@ tags: [Java]
   - `opens package to modules`: 특정 패키지를 특정 모듈에 개방
   - `provides interface with class`: *보충 필요*
 
-# Chapter 15 Concepts behind CompletableFuture and reactive programming
+# Concepts behind CompletableFuture and reactive programming
 
 - 두가지 아이디어 CompletableFuture, Flow APIs
    - publish-subscribe protocol로 reactive 프로그래밍 구현
@@ -552,7 +552,7 @@ tags: [Java]
   - 너무 많은 msg가 발행되는 경우(High-Pressure)
     - 이런 경우를 대비하여 `Subscription`을 통해 피드백을 줌(Backpressure)
 
-# Chapter 16 CompletableFuture: composable asynchronous programming
+# CompletableFuture: composable asynchronous programming
 
 - 생성(Factories)
   - `supplyAsync`: `suplier`기반으로 생성, Executor 지정 가능
@@ -570,7 +570,7 @@ tags: [Java]
   - 연쇄 함수들을 활용해서, 변환, 조합등이 가능하다.
   - `orTimeout`, `completeOnTimeout`을 통해서 타임아웃 지정 가능
 
-# Chapter 17 Reactive Programming
+# Reactive Programming
 
 - Why?: 고부하 상황에서도, 적응 장애로 사용자에게 응답 가능하기 위해서.
 - Reactive Manifesto
