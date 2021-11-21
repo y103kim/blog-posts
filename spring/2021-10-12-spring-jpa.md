@@ -171,3 +171,116 @@ var orders: MutableList<Order> = ArrayList(),
 - 부모 엔티티 저장할때, 자식도 함께 저장되고
 - 부모 엔티를 삭제하면, 고아가 된 자식도 함께 삭제된다.
 - 트리구조(대상의 하나의 부모만 가질때) 사용하는게 적합.
+
+# 임베디드 타입
+
+- `@Embedded`, `@Embeddable`
+- DB상의 Column들을 묶어서 객체로 만들 수 있음
+- DB에는 영향을 주지 않음
+- `@AttributeOverrides`: 타입 이름 재정의 가능
+- 임베디드 타입은 참조를 전달할 수도 있으므로, 불변으로 사용하는게 좋다.
+  - setter를 모두 없애자
+- 비교를 위한 `equals`구현 필요
+- 값 타입 컬랙션은 쓰지 말자.
+
+# JPQL
+
+- JPQ에서 SQL 쿼리하는 방법
+  - Native SQL: 직접 SQL 작성
+  - JPQL: 엔티티 대상의 SQL 쿼리
+  - Query DSL: JPQL 빌더
+- 특징
+  - Entity, Attribute는 대소문자 구분함
+  - JPQL 키워드 (Select 등)은 대소문자 구분 없음
+  - 테이블 이름 대신, 엔티티 이름을 써야함
+  - 별칭은 필수, `as`는 생략 가능
+  - `count`, `sum`, `avg`, `max`, `min` 가능
+  - `group by`, `having`, `order by` 가능
+
+### 반환, 파라미터
+
+- `TypedQuery`, `Query`로 반환받음
+- `getResultList`, `getSingleResult`
+- 단일 반환은 없거나 많으면 예외발생하므로 주의
+- 파라미터 바인딩 가능 `setParameter`
+
+### 프로젝션: 조회할 대상을 전사하기
+
+- 쿼리, 타입 리플렉션
+- `em.createQuery("SELECT m FROM Member m", Member.class)`
+- `SELECT xxx FROM`: xxx에 무엇이 오느냐에 따라 리턴이 달라짐
+- `SELECT m FROM Member m`: entity projection
+- `SELECT m.team FROM Member m`: entity projection with join (사용하지 말것)
+- `SELECT m.address FROM Member m`: embedded projection
+- `SELECT m.username FROM Member m`: string projection
+
+### 여러 값 조회
+
+- `SELECT m.username, m.age FROM Member m`
+  - `Object[]`로 리턴받아서 조회가능
+- `SELECT new jpabook.jpql.UserDTO(m.username, m.age) FROM Member m`
+  - DTO의 new를 호출하는 식으로 리턴받기 가능
+  - 순서와 타입이 일치하는 생성자 필요
+- 페이징: `setFirstResult`, `setMaxResults`
+
+### Join
+
+- inner join: `SELECT m FROM Member m INNER JOIN m.team t`
+- outer join: `SELECT m FROM Member m OUTER JOIN m.team t`
+- theta join: `select count(m) from Member m, Team t where m.username = t.name`
+- `on`: 조인 대상 필터링, 연관관계 없는 외부 조인 가능
+  - SQL은 join시 연관관계를 따로 on으로 넣어야함
+  - JPQL은 연관된 필드로 join하면 on은 자동으로 넣어줌
+  - 추가로 필요한 필터링을 on으로 넣으면 됨
+
+### Subquery
+
+- 괄호로 묶어서 쿼리를 중첩 가능
+- select, where, having 절에서 사용 가능
+- from 절에서 사용 불가능
+  - join으로 따로 풀어서 쓸 것
+- 서브 쿼리의 최적화를 위해서, 엔티티를 다 따로 만들어서 쓸 것
+- `ALL`, `ANY`, `SOME`, `IN` 등의 함수를 지원함
+
+```sql
+-- subquery with seperate entity
+select m from Member m
+  where m.age > (select avg(m2.age) from Member m2)
+```
+
+### 기타 문법들
+
+- `case when .. then .. else`: 구문 사용 가능
+- `COALESCE`: null을 특정 값으로 대체
+- `NULLIF`: 특정값을 null로 대체
+- 기본 함수들
+  - 문자열: `CONCAT`, `SUBSTRING`, `TRIM`, `LOWER`, `UPPER`, `LENGTH`, `LOCATE`
+  - 숫자: `ABS`, `SQRT`, `MOD`
+  - 기타: `SIZE`, `INDEX`
+- 사용자 정의 함수도 미리 정의하면 사용 가능
+
+### 경로 표현식
+
+- 필드에 접근한는 것 이외에도
+- 연관된 다른 엔티티에 접근하거나
+- oneToMany로 매핑된 컬랙션 값도 접근 가능
+- 그러나 필드를 접근하는거 이외에는 묵시적 join이 생김
+  - 쓰지말자
+
+### Fetch join
+
+- 지연로딩으로 기본으로 해둘 때, 즉시 로딩을 할 수 있는 방법
+- 엔티티의 연관관계들을 찾아서 Persistence를 채워준다.
+- 일대다, 다대일 다 가능
+- Fetch join된 대상에는 별칭을 주어서 필터링 하지 말것
+  - 데이터 정합성을 해치는 결과를 초래
+
+### Collection fetch Join
+
+- 1:N 연관에 대해서 생기는 문제들
+- 중복이 생길 수 있음
+  - DISTINCT를 넣을 경우 쿼리에 DISTINCT를 넣어 join된 테이블에 중복 제거
+  - 더해서 어플리케이션 단에서도 전사 대상의 중복을 추가로 제거해줌
+- paging api 사용 불가
+  - 1:N -> N:1 변경
+  - `@BatchSize`를 사용할 수 있음
