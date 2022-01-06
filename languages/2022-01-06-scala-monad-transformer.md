@@ -102,11 +102,14 @@ val city: Future[Option[String]] = for
 yield maybeCity
 ```
 
+- 서로 다른 두 Functor는 중첩할 수 있다.
+  - `FunctorB.compose(FunctorA)`는 또다른 Functor이다.
 - 서로 다른 두 모나드는 중첩할 수 없다. 왜?
   - flatMap을 위한 로직을 알 수 없기 때문
   - `Future[Option[String]]`을 flatMap한다고 하자.
-  - `F[O[F[O[String`을 `F[F[O[O[String`으로 바꿀 수 있어야 한다.
-  - 그걸 위해서는 `Option`의 로직을 알야하 한다.
+  - flatMap의 인자는 `Option[String]`이 된다.
+  - 이걸 `String => Future[Option[String]]`에 넣어야 한다.
+  - 결국 `Option`의 까는 로직을 알야하 한다.
 
 ### 해결방법: Transformer!
 
