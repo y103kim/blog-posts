@@ -174,3 +174,12 @@ for _ <- 0 until iterationCount do
 - `dependency`로 직접 찍어볼 수 있다.
   - narrow: `OneToOneDependency`, `PruneDependency`, `RangeDependency`
   - wide: `ShuffleDependency`
+
+# Structured data: SQL, Dataframes, and Datasets
+
+- Dataframe은 RDD에 column이름을 추가한 형태
+  - sql과 유사한 함수형태의 조작만 가능하게 변함
+  - 단 쿼리 최적화가 강력하게 지워되므로 RDD보다 빠를 수 있음
+- Dataset은 Dataframe에 column type까지 추가한 형태
+  - `groupByKey`등 RDD에서 지원하던 함수 기반의 기능들을 활용 가능
+  - 그러나 함수 기반 기능을 쓰면 최적화가 안됨
